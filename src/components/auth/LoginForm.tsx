@@ -57,7 +57,7 @@ export const LoginForm: React.FC = () => {
             }
           } id="password" type="password" placeholder="Enter your password" required />
         </div>
-        <Button type="submit" className="w-full">
+        <Button variant='outline' type="submit" className="w-full">
           Login
         </Button>
       </form>
@@ -67,7 +67,7 @@ export const LoginForm: React.FC = () => {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+          <span className="backdrop-blur-xl px-2 text-muted-foreground">Or continue with</span>
         </div>
       </div>
 

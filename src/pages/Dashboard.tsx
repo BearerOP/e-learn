@@ -20,7 +20,7 @@ export default function Dashboard() {
       try {
         const data = await fetchAllCourse()
         console.log(data);
-        
+
         setCourses(data?.data?.data)
         setLoading(false)
       } catch (error) {
@@ -58,29 +58,66 @@ export default function Dashboard() {
             duration: 0.3,
             ease: "easeInOut",
           }}
-          className={`grid gap-6 min-h-[400px] ${gridView ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}
+          className={`grid gap-6 min-h-[400px] ${gridView ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-2"}`}
         >
-          {courses.map((course:Course) => (
+          {courses.map((course: Course) => (
             <motion.div
               key={course._id}
               whileHover={{ scale: 1.05 }}
               className="flex flex-col rounded-2xl border border-primary/30 dark:border-primary/30 bg-primary/10 dark:bg-primary/10"
             >
-              <div className="flex justify-between px-6 py-4">
-                <h3 className="font-bold text-xl md:text-2xl tracking-tighter text-gray-800 dark:text-gray-100">
-                  {course.name}
-                </h3>
-                <span className="font-semibold text-primary dark:text-gray/75 hover:dark:text-primary hover:text-primary transition-all duration-300">
-                  {course.price} USD
-                </span>
+
+              <div className="flex flex-col justify-between px-6 py-4">
+                {
+                  course.thumbnail ? (
+                    <img
+                      src={course.thumbnail}
+                      alt={course.name}
+                      className="w-full h-48 object-cover rounded-xl"
+                    />
+                  ) : (
+                    <div className="w-full
+                    h-48
+                    bg-primary/20
+                    dark:bg-primary/20
+                    rounded-xl
+                    flex
+                    items-center
+                    justify-center
+                    text-primary
+                    dark:text-primary
+                    text-2xl
+                    font-bold"
+                    >
+
+                      {course.thumbnail ? (
+                        <img src={course.thumbnail} alt={course.name} className="w-full h-48 object-cover rounded-xl" />
+                      ) : (
+                        <div className="w-full h-48 bg-primary/20 dark:bg-primary/20 rounded-xl flex items-center justify-center text-primary dark:text-primary text-4xl font-bold">
+                          {course.name[0]}
+                        </div>
+                      )
+
+                      }
+                    </div>
+                  )
+                }
+                <div className="flex justify-between px-6 py-4">
+                  <h3 className="font-bold text-xl md:text-2xl tracking-tighter text-gray-800 dark:text-gray-100">
+                    {course.name}
+                  </h3>
+                  <span className="font-semibold text-primary dark:text-gray/75 hover:dark:text-primary hover:text-primary transition-all duration-300">
+                    {course.price} USD
+                  </span>
+                </div>
               </div>
               <div className="flex flex-col gap-4 px-6 py-4 rounded-2xl bg-primary/15 dark:bg-primary/10">
                 <div className="flex flex-col w-full">
-                  <span className="text-lg font-bold tracking-tighter text-gray-700 dark:text-gray-200">
-                    Description
+                  <span className="font-bold text-lg  tracking-tighter text-gray-800 dark:text-gray-100">
+Description
                   </span>
-                  <p className="break-all text-gray-600 dark:text-gray-400 font-light hover:text-gray-800 dark:hover:text-gray-200 transition-all duration-300">
-                    {course.description.substring(0, 80) + "..."}
+                  <p className="break-all text-sm text-gray-600 dark:text-gray-400 font-light hover:text-gray-800 dark:hover:text-gray-200 transition-all duration-300">
+                    {gridView ? course.description.substring(0, 60) + "..." : course.description}
                   </p>
                   <Separator className='my-2 bg-primary/50' />
                   <span className="text-primary/80 text-sm">
