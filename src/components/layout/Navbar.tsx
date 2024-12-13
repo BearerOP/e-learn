@@ -1,39 +1,55 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Book, User } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '../../contexts/auth-context';
-import { logout as apiLogout } from '../../lib/api';
+import { logout as apiLogout, getAuthToken, getMe } from '../../lib/api';
 import { toast } from 'sonner';
 
 export const Navbar: React.FC = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, login } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const authToken = getAuthToken();
+      if (authToken) {
+        try {
+          setLoading(true);
+          const response = await getMe();
+          login(response.data); // Update context with fetched user details
+        } catch (error) {
+          console.error('Error fetching user details:', error);
+          toast.error('Unable to fetch user details. Please log in again.');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    // Fetch user details if authenticated
+    fetchUserDetails();
+  }, []);
 
   const handleLogout = async () => {
-    const authToken = user?.token as string;
-  
-    if (!authToken && !isAuthenticated) {
+    const authToken = getAuthToken();
+    if (!authToken) {
       toast.error('No authentication token found. Please log in again.');
       return;
     }
-  
+
     toast.promise(
       async () => {
         const response = await apiLogout(authToken);
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Adding delay of 1.5 seconds
-        return response; // Ensure API response is returned
+        logout(); // Clear user session
+        return response?.data?.message || 'You have successfully logged out.';
       },
       {
         loading: 'Logging out...',
-        success: (response) => {
-          logout(); // Clear user session
-          return response?.data?.message || 'You have successfully logged out.';
-        },
-        error: (error) => `Failed to logout: ${error?.message || 'Please try again.'}`,
+        success: 'Successfully logged out!',
+        error: 'Failed to log out. Please try again.',
       }
     );
   };
-  
 
   return (
     <nav className="border-b bg-background">
@@ -45,19 +61,18 @@ export const Navbar: React.FC = () => {
               <span className="text-xl font-bold">GyanSagar</span>
             </Link>
           </div>
-
           <div className="flex items-center space-x-4">
-            <Link to="/courses" className="text-foreground/80 hover:text-foreground">
-              Courses
-            </Link>
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center text-sm space-x-4">
                 <Link to="/dashboard" className="text-foreground/80 hover:text-foreground">
                   Dashboard
                 </Link>
+                <Link to="/instructor/courses" className="text-foreground/80 hover:text-foreground">
+                  Instructor
+                </Link>
                 <div className="flex items-center space-x-2">
                   <User className="w-5 h-5" />
-                  <span>{user?.username}</span>
+                  <span>{loading ? 'Loading...' : user?.username || 'User'}</span>
                 </div>
                 <Button variant="outline" size="sm" onClick={handleLogout}>
                   Logout

@@ -114,7 +114,7 @@ export default function Dashboard() {
               <div className="flex flex-col gap-4 px-6 py-4 rounded-2xl bg-primary/15 dark:bg-primary/10">
                 <div className="flex flex-col w-full">
                   <span className="font-bold text-lg  tracking-tighter text-gray-800 dark:text-gray-100">
-Description
+                    Description
                   </span>
                   <p className="break-all text-sm text-gray-600 dark:text-gray-400 font-light hover:text-gray-800 dark:hover:text-gray-200 transition-all duration-300">
                     {gridView ? course.description.substring(0, 60) + "..." : course.description}

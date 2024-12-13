@@ -15,7 +15,7 @@ function App() {
             <Routes>
               <Route path="/" element={<div>Welcome to GyanSagar</div>} />
               <Route path="/login" element={<LoginForm />} />
-              <Route path="/courses" element={<Dashboard/>} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
           <Toaster duration={5000} position="bottom-right" expand={true} richColors theme='dark' />

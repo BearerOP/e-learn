@@ -1,8 +1,16 @@
+// export interface User {
+//   id: string;
+//   username: string;
+//   email: string;
+//   role: Role;
+//   token: string;
+//   purchasedCourses: string[];
+// }
 export interface User {
-  id: string;
+  _id: string;
   username: string;
   email: string;
-  role: Role;
+  roles: [Role];
   token: string;
   purchasedCourses: string[];
 }
@@ -29,6 +37,7 @@ export interface AuthState {
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
+  setUser: (user: User) => void;
 }
 
-export type Role = 'user' | 'admin';
+export type Role = 'user' | 'admin' | 'instructor' | 'student';

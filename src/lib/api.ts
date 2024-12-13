@@ -33,7 +33,7 @@ api.interceptors.request.use(
 );
 
 export const getMe = () => {
-    return api.get("/profile");
+    return api.get("/user/me");
 };
 
 export const login = (email: string, password: string) => {
@@ -45,13 +45,13 @@ export const register = (username: string, role: Role, email: string, password: 
 };
 
 export const logout = (authToken: string) => {
-    return api.post("/user/logout",{authToken});
+    return api.post("/user/logout", { authToken });
 };
 
 export const fetchAllCourse = (page = 1, limit = 10) => {
     try {
-      return api.get(`/course/getAll?page=${page}&limit=${limit}`);
+        return api.get(`/course/getAll?page=${page}&limit=${limit}`);
     } catch (err) {
-      console.error(err);
+        console.error(err);
     }
-  };
+};

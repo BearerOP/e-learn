@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../types';
-import { toast } from 'sonner';
 import { removeAuthToken } from '../lib/api';
 
 interface AuthContextType {
   user: User | null;
+  setUser: (user: User | null) => void;
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
@@ -19,16 +19,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (user: User) => {
     setUser(user);
     setIsAuthenticated(true);
+    console.log("Login triggered:", { isAuthenticated, user });
   };
 
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
     removeAuthToken();
+    console.log("User logged out.");
   };
 
+  useEffect(() => {
+    console.log("Authentication state updated:", { isAuthenticated, user });
+  }, [isAuthenticated, user]);
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
