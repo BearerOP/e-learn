@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { AuthProvider } from '@/contexts/auth-context';
 import { LoginForm } from '@/components/auth/LoginForm';
 import Dashboard from '@/pages/Dashboard';
+import Profile from '@/pages/Profile';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
             <Routes>
               <Route path="/login" element={<LoginForm />} />
               <Route path="/" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+
             </Routes>
           </main>
           <Toaster duration={5000} position="bottom-right" expand={true} richColors theme='dark' />
