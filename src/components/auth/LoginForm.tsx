@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Github } from 'lucide-react';
-import { useAuth } from '../../contexts/auth-context';
-import { login as apiLogin, setAuthToken } from '../../lib/api';
+import { useAuth } from '@/contexts/auth-context';
+import { login as apiLogin, setAuthToken } from '@/lib/api';
 
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = React.useState('');
@@ -31,7 +31,7 @@ export const LoginForm: React.FC = () => {
       {
         loading: 'Logging in...',
         success: (message) => {
-          navigate('/dashboard');
+          navigate('/');
           return message;
         },
         error: (err) => err.message || 'Failed to login. Please try again.',

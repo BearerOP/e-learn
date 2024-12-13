@@ -29,7 +29,6 @@ export default function Dashboard() {
         toast.error("Failed to fetch courses. Please try again.")
       }
     }
-
     loadCourses()
   }, [])
 

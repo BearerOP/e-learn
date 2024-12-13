@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '../types';
-import { removeAuthToken } from '../lib/api';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { User } from '@/types';
+import { removeAuthToken } from '@/lib/api';
 
 interface AuthContextType {
   user: User | null;
