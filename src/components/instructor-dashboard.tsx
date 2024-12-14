@@ -47,15 +47,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { CourseManagement } from "@/components/course-management"
 import Footer from "./layout/Footer"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/contexts/auth-context"
 
-const instructorData = {
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "/avatars/instructor.jpg",
-    publishedCourses: 5,
-    totalStudents: 1234,
-    totalEarnings: 9876.54,
-}
 
 const categories = [
     "Web Development",
@@ -66,7 +59,26 @@ const categories = [
     "Business",
 ]
 
+let instructorData = {
+    username: "John Doe",
+    email: "john@example.com",
+    avatar: "/avatars/instructor.jpg",
+    publishedCourses: 5,
+    totalStudents: 1234,
+    totalEarnings: 9876.54,
+}
 export default function InstructorDashboard() {
+    const { user, logout } = useAuth();
+    console.log(user);
+    
+     instructorData = {
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        publishedCourses: 5,
+        totalStudents: 1234,
+        totalEarnings: 9876.54,
+    }
     const [activeView, setActiveView] = useState("dashboard")
 
     const navigate = useNavigate();
@@ -80,7 +92,6 @@ export default function InstructorDashboard() {
 
     return (
         <>
-
             <SidebarProvider>
                 <Sidebar variant="inset">
                     <SidebarHeader>
@@ -152,13 +163,13 @@ export default function InstructorDashboard() {
                                             <Avatar className="h-8 w-8 rounded-lg">
                                                 <AvatarImage
                                                     src={instructorData.avatar}
-                                                    alt={instructorData.name}
+                                                    alt={instructorData.username}
                                                 />
                                                 <AvatarFallback className="rounded-lg">JD</AvatarFallback>
                                             </Avatar>
                                             <div className="grid flex-1 text-left text-sm leading-tight">
                                                 <span className="truncate font-semibold">
-                                                    {instructorData.name}
+                                                    {instructorData.username}
                                                 </span>
                                                 <span className="truncate text-xs">
                                                     {instructorData.email}
@@ -178,7 +189,7 @@ export default function InstructorDashboard() {
                                                 <Avatar className="h-8 w-8 rounded-lg">
                                                     <AvatarImage
                                                         src={instructorData.avatar}
-                                                        alt={instructorData.name}
+                                                        alt={instructorData.username}
                                                     />
                                                     <AvatarFallback className="rounded-lg">
                                                         JD
@@ -186,7 +197,7 @@ export default function InstructorDashboard() {
                                                 </Avatar>
                                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                                     <span className="truncate font-semibold">
-                                                        {instructorData.name}
+                                                        {instructorData.username}
                                                     </span>
                                                     <span className="truncate text-xs">
                                                         {instructorData.email}

@@ -69,12 +69,6 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <div className="flex items-center text-sm space-x-4">
-                <Link to="/" className="text-foreground/80 hover:text-foreground">
-                  Dashboard
-                </Link>
-                <Link to="/instructor/courses" className="text-foreground/80 hover:text-foreground">
-                  Instructor
-                </Link>
                 <DropdownMenu >
                   <DropdownMenuTrigger>
                     <Button variant="outline" size="sm">
@@ -119,6 +113,8 @@ export const Navbar: React.FC = () => {
                         <Settings className="mr-2 h-4 w-4" />
                         <span>Settings</span>
                       </DropdownMenuItem></Link>
+                    <DropdownMenuSeparator />
+
                     <Link to='/instructor/courses'>
                       <DropdownMenuItem>
                         <GraduationCap className="mr-2 h-4 w-4" />
