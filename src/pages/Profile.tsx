@@ -8,27 +8,47 @@ import { Edit, LogOut } from "lucide-react";
 import Loader from "@/components/ui/loader";
 import { useAuth } from "@/contexts/auth-context";
 import { useState } from "react";
+import { toast } from "sonner";
+import { getAuthToken, logout as apiLogout } from "@/lib/api";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
+  
+  const navigate = useNavigate();
   const { logout, user } = useAuth();
   const [logoutLoading, setLogoutLoading] = useState(false);
 
-  const roles = user.roles || [];
-  const role = roles.length > 0 ? roles[0] : "user";
+  // const roles = user.roles || [];
+  // const role = roles.length > 0 ? roles[0] : "user";
 
   const handleLogout = async () => {
-      setLogoutLoading(true);
-      await logout();
-      setLogoutLoading(false);
+    const authToken = getAuthToken();
+    if (!authToken) {
+      toast.error('No authentication token found. Please log in again.');
+      return;
+    }
+
+    toast.promise(
+      async () => {
+        const response = await apiLogout(authToken);
+        logout(); // Clear user session
+        return response?.data?.message || 'You have successfully logged out.';
+      },
+      {
+        loading: 'Logging out...',
+        success: 'Successfully logged out!',
+        error: 'Failed to log out. Please try again.',
+      }
+    );
+    navigate('/');
   };
 
   const provider = "exampleProvider"; // Replace with actual provider
   const providerId = "exampleProviderId"; // Replace with actual provider ID
   const myCourses = []; // Replace with actual myCourses data
   const purchasedCourses = []; // Replace with actual purchasedCourses data
-  const { avatar, username, email } = user;
   return (
-    <div className="h-full w-full flex items-center justify-center bg-background relative overflow-hidden p-4 z-0">
+    <div className="h-full w-full flex items-center justify-center bg-background relative overflow-hidden p-8 z-0">
       
       <Card className="w-full max-w-4xl bg-background/80 dark:bg-background/30 backdrop-blur-sm shadow-xl border border-border relative z-10">
         <CardHeader className="flex flex-row items-center justify-between">
@@ -45,16 +65,16 @@ export default function Profile() {
         <CardContent className="space-y-6">
           <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={avatar} alt={username} />
+              <AvatarImage src={user?.avatar} alt={user?.username} />
               <AvatarFallback className="bg-primary text-primary-foreground">
-                {username ? username.charAt(0).toUpperCase() : "?"}
+                {user?.username ? user?.username.charAt(0).toUpperCase() : "?"}
               </AvatarFallback>
             </Avatar>
             <div className="text-center sm:text-left">
-              <h2 className="text-2xl font-bold text-foreground">{username}</h2>
-              <p className="text-muted-foreground">{email}</p>
-              <Badge variant={role === 'user' ? "destructive" : "secondary"} className="mt-1">
-                {role.charAt(0).toUpperCase() + role.slice(1)}
+              <h2 className="text-2xl font-bold text-foreground">{user?.username}</h2>
+              <p className="text-muted-foreground">{user?.email}</p>
+              <Badge variant={user?.role === 'instructor' ? "destructive" : "secondary"} className="mt-1">
+                {user?.role.charAt(0).toUpperCase() + user?.role.slice(1)}
               </Badge>
             </div>
           </div>

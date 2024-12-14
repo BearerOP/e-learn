@@ -14,6 +14,7 @@ export interface User {
   roles: [Role];
   token: string;
   purchasedCourses: string[];
+  role: Role;
 }
 
 export interface Course {

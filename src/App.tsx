@@ -5,22 +5,25 @@ import { AuthProvider } from '@/contexts/auth-context';
 import { LoginForm } from '@/components/auth/LoginForm';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
+import InstructorDashboard from './components/instructor-dashboard';
+import RootLayout from './components/layout/RootLayout';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-background">
-          <Navbar />
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <Routes>
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/profile" element={<Profile />} />
+        <div className="">
 
-            </Routes>
-          </main>
-          <Toaster duration={5000} position="bottom-right" expand={true} richColors theme='dark' />
+          <Routes>
+            <Route path="/instructor/courses" element={<InstructorDashboard />} />
+            <Route path="/" element={<RootLayout />} >
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+
+          </Routes>
+          <Toaster duration={5000} position="bottom-right" expand={true} richColors />
         </div>
       </Router>
     </AuthProvider>
