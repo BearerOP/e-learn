@@ -46,8 +46,10 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { CourseManagement } from "@/components/course-management"
 import Footer from "./layout/Footer"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "@/contexts/auth-context"
+import { getAuthToken, logout as apiLogout } from "@/lib/api"
+import { toast } from "sonner"
 
 
 const categories = [
@@ -68,10 +70,10 @@ let instructorData = {
     totalEarnings: 9876.54,
 }
 export default function InstructorDashboard() {
+
     const { user, logout } = useAuth();
-    console.log(user);
-    
-     instructorData = {
+
+    instructorData = {
         username: user.username,
         email: user.email,
         avatar: user.avatar,
@@ -89,6 +91,27 @@ export default function InstructorDashboard() {
     function navigateProfile() {
         navigate("/profile");
     }
+    const handleLogout = async () => {
+        const authToken = getAuthToken();
+        if (!authToken) {
+            toast.error('No authentication token found. Please log in again.');
+            return;
+        }
+
+        toast.promise(
+            async () => {
+                const response = await apiLogout(authToken);
+                logout(); // Clear user session
+                return response?.data?.message || 'You have successfully logged out.';
+            },
+            {
+                loading: 'Logging out...',
+                success: 'Successfully logged out!',
+                error: 'Failed to log out. Please try again.',
+            }
+        );
+        navigate('/');
+    };
 
     return (
         <>
@@ -98,7 +121,7 @@ export default function InstructorDashboard() {
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton size="lg" asChild>
-                                    <a href="#">
+                                    <Link to="#">
                                         <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                             <Command className="size-4" />
                                         </div>
@@ -106,7 +129,7 @@ export default function InstructorDashboard() {
                                             <span className="truncate font-semibold">Instructor Dashboard</span>
                                             <span className="truncate text-xs">Course Management</span>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
@@ -221,7 +244,7 @@ export default function InstructorDashboard() {
                                             </DropdownMenuItem>
                                         </DropdownMenuGroup>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem onClick={handleLogout}>
                                             <LogOut className="mr-2 h-4 w-4" />
                                             <span>Log out</span>
                                         </DropdownMenuItem>
