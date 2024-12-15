@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import { AuthProvider } from '@/contexts/auth-context';
 import { LoginForm } from '@/components/auth/LoginForm';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
@@ -9,7 +8,6 @@ import RootLayout from './components/layout/RootLayout';
 
 function App() {
   return (
-    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/instructor/courses" element={<InstructorDashboard />} />
@@ -21,7 +19,6 @@ function App() {
         </Routes>
         <Toaster duration={5000} position="bottom-right" expand={true} richColors />
       </Router>
-    </AuthProvider>
   );
 }
 

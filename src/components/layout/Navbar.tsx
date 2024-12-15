@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { ModeToggle } from '../mode-toggle-dropdown';
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
+
             {isAuthenticated ? (
               <div className="flex items-center text-sm space-x-4">
                 <DropdownMenu >
@@ -114,7 +116,6 @@ export const Navbar: React.FC = () => {
                         <span>Settings</span>
                       </DropdownMenuItem></Link>
                     <DropdownMenuSeparator />
-
                     <Link to='/instructor/courses'>
                       <DropdownMenuItem>
                         <GraduationCap className="mr-2 h-4 w-4" />
@@ -141,6 +142,9 @@ export const Navbar: React.FC = () => {
                 </Button>
               </div>
             )}
+            <div className="flex items-center space-x-4">
+              <ModeToggle />
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
-import { Search } from 'lucide-react'
+import React from 'react'
+import { Search, PlusCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,7 +12,15 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function CourseManagement() {
+interface CourseManagementProps {
+  setActiveView: (view: string) => void;
+}
+
+export function CourseManagement({ setActiveView }: CourseManagementProps) {
+  const handleNewCourse = () => {
+    setActiveView("createCourse");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -34,7 +43,13 @@ export function CourseManagement() {
               </SelectContent>
             </Select>
           </div>
-          <Button size="default" variant="default" className="bg-[#8b5cf6] text-white hover:bg-[#7c3aed]">
+          <Button 
+            size="default" 
+            variant="default" 
+            className="bg-[#8b5cf6] text-white hover:bg-[#7c3aed]"
+            onClick={handleNewCourse}
+          >
+            <PlusCircle className="mr-2 h-4 w-4" />
             New course
           </Button>
         </div>

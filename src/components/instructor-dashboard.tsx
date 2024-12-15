@@ -50,6 +50,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "@/contexts/auth-context"
 import { getAuthToken, logout as apiLogout } from "@/lib/api"
 import { toast } from "sonner"
+import { ModeToggle } from "./mode-toggle"
 
 
 const categories = [
@@ -188,7 +189,9 @@ export default function InstructorDashboard() {
                                                     src={instructorData.avatar}
                                                     alt={instructorData.username}
                                                 />
-                                                <AvatarFallback className="rounded-lg">JD</AvatarFallback>
+                                                <AvatarFallback className="rounded-lg">
+                                                    {instructorData.username.charAt(0).toUpperCase()}
+                                                </AvatarFallback>
                                             </Avatar>
                                             <div className="grid flex-1 text-left text-sm leading-tight">
                                                 <span className="truncate font-semibold">
@@ -215,7 +218,7 @@ export default function InstructorDashboard() {
                                                         alt={instructorData.username}
                                                     />
                                                     <AvatarFallback className="rounded-lg">
-                                                        JD
+                                                        {instructorData.username.charAt(0).toUpperCase()}
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -238,6 +241,11 @@ export default function InstructorDashboard() {
                                                 <Settings className="mr-2 h-4 w-4" />
                                                 <span>Settings</span>
                                             </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem>
+                                                <ModeToggle />
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
                                             <DropdownMenuItem>
                                                 <GraduationCap className="mr-2 h-4 w-4" />
                                                 <span onClick={navigateHome}>Switch to Student</span>
@@ -360,7 +368,7 @@ export default function InstructorDashboard() {
                             </Card>
                         )}
                         {activeView === "myCourses" && (
-                            <CourseManagement />
+                            <CourseManagement setActiveView={setActiveView}/>
                         )}
                     </main>
                     <Footer />
