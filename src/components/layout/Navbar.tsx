@@ -68,7 +68,9 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-
+          <div className="flex items-center space-x-4">
+              <ModeToggle />
+            </div>
             {isAuthenticated ? (
               <div className="flex items-center text-sm space-x-4">
                 <DropdownMenu >
@@ -142,9 +144,6 @@ export const Navbar: React.FC = () => {
                 </Button>
               </div>
             )}
-            <div className="flex items-center space-x-4">
-              <ModeToggle />
-            </div>
           </div>
         </div>
       </div>

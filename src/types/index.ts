@@ -43,3 +43,9 @@ export interface AuthState {
 }
 
 export type Role = 'user' | 'admin' | 'instructor' | 'student';
+
+export interface CarouselItem {
+  id: string
+  title: string
+  imageUrl: string
+}
