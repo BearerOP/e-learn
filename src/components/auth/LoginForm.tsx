@@ -34,7 +34,7 @@ export const LoginForm: React.FC = () => {
           navigate('/');
           return message;
         },
-        error: (err) => err.message || 'Failed to login. Please try again.',
+        error: (err) => err.response.data.message || 'Failed to login. Please try again.',
       }
     );
   };

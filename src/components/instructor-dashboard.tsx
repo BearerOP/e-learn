@@ -368,7 +368,7 @@ export default function InstructorDashboard() {
                             </Card>
                         )}
                         {activeView === "myCourses" && (
-                            <CourseManagement setActiveView={setActiveView}/>
+                            <CourseManagement setActiveView={setActiveView} />
                         )}
                     </main>
                     <Footer />
