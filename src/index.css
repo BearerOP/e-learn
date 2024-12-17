@@ -86,4 +86,14 @@
     }
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+button {
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
 

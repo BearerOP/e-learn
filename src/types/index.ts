@@ -1,11 +1,3 @@
-// export interface User {
-//   id: string;
-//   username: string;
-//   email: string;
-//   role: Role;
-//   token: string;
-//   purchasedCourses: string[];
-// }
 export interface User {
   _id: string;
   avatar: string;
@@ -15,23 +7,6 @@ export interface User {
   token: string;
   purchasedCourses: string[];
   role: Role;
-}
-
-export interface Course {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  duration: number;
-  author: {
-    _id: string;
-    username: string;
-    email: string;
-  };
-  category: string;
-  status: string;
-  thumbnail: string;
-  rating: number;
 }
 
 export interface AuthState {
@@ -45,7 +20,35 @@ export interface AuthState {
 export type Role = 'user' | 'admin' | 'instructor' | 'student';
 
 export interface CarouselItem {
-  id: string
-  title: string
-  imageUrl: string
+  id: string;
+  title: string;
+  imageUrl: string;
 }
+
+export interface Course {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  thumbnail: string;
+  category: string;
+  createdBy: {
+    _id: string;
+    email: string;
+    username: string;
+  };
+  tracks: string[];
+  studentsEnrolled: string[];
+  reviews: {
+    _id: string;
+    student: string;
+    rating: number;
+    comment: string;
+    createdAt: string;
+  }[];
+  averageRating: number;
+  status: string;
+  onAddToCart?: () => void;
+  onAddToWishlist?: () => void;
+}
+

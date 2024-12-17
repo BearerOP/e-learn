@@ -1,81 +1,73 @@
-'use client'
+"use client"
 
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { useCarousel } from '../hooks/useCarousel'
-import { CarouselItem } from '../types/index'
+import { useRef } from "react"
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { CourseCard } from "@/components/course-card"
+import { Course } from "@/types"
 
 interface CourseCarouselProps {
-  items: CarouselItem[]
+  title: string
+  courses: Course[]
 }
 
-export function CourseCarousel({ items }: CourseCarouselProps) {
-  const { currentIndex, next, prev, goTo, isAutoScrolling, toggleAutoScroll } = useCarousel(items.length)
+export function CourseCarousel({ title, courses }: CourseCarouselProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 300
+      const newScrollLeft =
+        scrollContainerRef.current.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount)
+      scrollContainerRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      })
+    }
+  }
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto">
-      <Card className="overflow-hidden">
-        <CardContent className="p-0">
-          <div className="relative aspect-video">
-            <img
-              src={items[currentIndex].imageUrl}
-              alt={items[currentIndex].title}
-              className="object-cover h-full w-full"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
-              <h3 className="text-white text-2xl font-bold p-4">
-                {items[currentIndex].title}
-              </h3>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
-        <Button variant="outline" size="icon" onClick={prev} className="rounded-full">
-          <ChevronLeft className="h-4 w-4" />
-          <span className="sr-only">Previous course</span>
-        </Button>
-      </div>
-
-      <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
-        <Button variant="outline" size="icon" onClick={next} className="rounded-full">
-          <ChevronRight className="h-4 w-4" />
-          <span className="sr-only">Next course</span>
-        </Button>
-      </div>
-
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {items.map((_, index) => (
+    <div className="w-full space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        <div className="flex gap-2">
           <Button
-            key={index}
             variant="outline"
-            size="sm"
-            className={`w-2 h-2 rounded-full p-0 ${
-              index === currentIndex ? 'bg-primary' : 'bg-secondary'
-            }`}
-            onClick={() => goTo(index)}
+            size="icon"
+            onClick={() => scroll("left")}
+            className="rounded-full"
           >
-            <span className="sr-only">Go to slide {index + 1}</span>
+            <ChevronLeft className="h-4 w-4" />
           </Button>
-        ))}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => scroll("right")}
+            className="rounded-full"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
-
-      <div className="absolute top-4 right-4">
-        <Button variant="outline" size="icon" onClick={toggleAutoScroll} className="rounded-full">
-          {isAutoScrolling ? (
-            <>
-              <Pause className="h-4 w-4" />
-              <span className="sr-only">Pause auto-scroll</span>
-            </>
-          ) : (
-            <>
-              <Play className="h-4 w-4" />
-              <span className="sr-only">Start auto-scroll</span>
-            </>
-          )}
-        </Button>
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide"
+      >
+        {courses.map((course) => (
+          <CourseCard
+            key={course._id}
+            title={course.title}
+            instructor={course.createdBy.username}
+            rating={course.averageRating}
+            totalRatings={course.studentsEnrolled.length}
+            price={course.price}
+            originalPrice={course.price} // Assuming original price is not provided in the new interface
+            thumbnail={course.thumbnail}
+            onAddToCart={course.onAddToCart}
+            onAddToWishlist={course.onAddToWishlist}
+          />
+        ))}
       </div>
     </div>
   )

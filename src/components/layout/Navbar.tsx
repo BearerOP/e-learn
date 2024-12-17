@@ -14,7 +14,6 @@ export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout, login } = useAuth();
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     const fetchUserDetails = async () => {
       const authToken = getAuthToken();
@@ -78,7 +77,7 @@ export const Navbar: React.FC = () => {
                     <Button variant="outline" size="sm">
                       <div className="flex items-center space-x-2">
                         <User className="w-5 h-5" />
-                        <span>{loading ? 'Loading...' : user?.username || 'User'}</span>
+                        <span>{ user?.username || 'User'}</span>
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
