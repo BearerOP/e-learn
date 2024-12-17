@@ -222,17 +222,19 @@ export const Navbar: React.FC = () => {
   );
 };
 
-// Extracted Avatar Dropdown to improve readability
 const AvatarDropdown = ({ user, onLogout }) => {
   return (
     <DropdownMenu>
     <DropdownMenuTrigger>
-      <Button variant="outline" size="sm">
-        <div className="flex items-center space-x-2">
-          <User className="w-5 h-5" />
-          <span>{user?.username || 'User'}</span>
-        </div>
-      </Button>
+        <Avatar className="h-10 w-10 rounded-2xl border-1">
+            <AvatarImage
+              src={user?.avatar}
+              alt={user?.username}
+            />
+            <AvatarFallback className="rounded-lg">
+              {user?.username.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
     </DropdownMenuTrigger>
     <DropdownMenuContent className='min-w-56'>
       <DropdownMenuLabel className="p-0 font-normal">
