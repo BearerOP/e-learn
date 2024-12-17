@@ -109,7 +109,6 @@ export default function Dashboard() {
           }))} 
         />
       </div>
-      <Toaster/>
     </>
   )
 }
