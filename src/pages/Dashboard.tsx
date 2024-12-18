@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { fetchAllCourse } from "@/lib/api"
-import { toast, Toaster } from "sonner"
+import { toast } from "sonner"
 import { CourseCarousel } from "@/components/course-carousel"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { CarouselItem, Course } from "@/types"

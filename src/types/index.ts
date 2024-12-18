@@ -17,7 +17,7 @@ export interface AuthState {
   setUser: (user: User) => void;
 }
 
-export type Role = 'user' | 'admin' | 'instructor' | 'student';
+export type Role = 'both' | 'student';
 
 export interface CarouselItem {
   id: string;

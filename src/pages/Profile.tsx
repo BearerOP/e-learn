@@ -13,13 +13,10 @@ import { getAuthToken, logout as apiLogout } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  
+
   const navigate = useNavigate();
   const { logout, user } = useAuth();
   const [logoutLoading, setLogoutLoading] = useState(false);
-
-  // const roles = user.roles || [];
-  // const role = roles.length > 0 ? roles[0] : "user";
 
   const handleLogout = async () => {
     const authToken = getAuthToken();
@@ -49,7 +46,7 @@ export default function Profile() {
   const purchasedCourses = []; // Replace with actual purchasedCourses data
   return (
     <div className="h-full w-full flex items-center justify-center bg-background relative overflow-hidden p-8 z-0">
-      
+
       <Card className="w-full max-w-4xl bg-background/80 dark:bg-background/30 backdrop-blur-sm shadow-xl border border-border relative z-10">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-2xl font-bold text-foreground">Profile</CardTitle>
@@ -73,9 +70,15 @@ export default function Profile() {
             <div className="text-center sm:text-left">
               <h2 className="text-2xl font-bold text-foreground">{user?.username}</h2>
               <p className="text-muted-foreground">{user?.email}</p>
-              <Badge variant={user?.role === 'instructor' ? "destructive" : "secondary"} className="mt-1">
-                {user?.role.charAt(0).toUpperCase() + user?.role.slice(1)}
-              </Badge>
+              {
+                user?.role == 'both' ? (
+                  <div ><Badge variant="destructive" className="mt-2 mr-2">Instructor</Badge>
+                    <Badge variant="secondary" className="mt-2">Student</Badge>
+                  </div>
+                ) : (
+                  <Badge variant="secondary" className="mt-2">Student</Badge>
+                )
+              }
             </div>
           </div>
 
