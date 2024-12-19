@@ -51,7 +51,7 @@ export default function MyLearning() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">My Learning</h1>
       <Tabs defaultValue="purchased" onValueChange={(value) => setActiveTab(value as CourseCategory)}>
-        <TabsList className="w-full border-b mb-8">
+        <TabsList className="w-fit justify-start  border-b mb-8">
           <TabsTrigger value="purchased">All Courses</TabsTrigger>
           <TabsTrigger value="wishlist">Wishlist</TabsTrigger>
           <TabsTrigger value="cart">Cart</TabsTrigger>
