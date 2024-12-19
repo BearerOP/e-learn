@@ -13,7 +13,7 @@ export default function CartContents() {
   useEffect(() => {
     const fetchCartItems = async () => {
       const items = await getCartItems()
-      setCartItems(items)
+      setCartItems(items.data.cart)
     }
     fetchCartItems()
   }, [])
@@ -44,7 +44,12 @@ export default function CartContents() {
                   <img src={item.thumbnail} alt={item.title} className="w-24 h-16 object-cover rounded mr-4" />
                   <div className="flex-grow">
                     <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item?.createdBy?.username}</p>
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Created By:</strong> {item.createdBy?.username || 'Unknown'}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Average Rating:</strong> {item.averageRating ? item.averageRating.toFixed(1) : 'N/A'}
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold">₹{item.price}</p>
@@ -70,4 +75,5 @@ export default function CartContents() {
     </div>
   )
 }
+
 

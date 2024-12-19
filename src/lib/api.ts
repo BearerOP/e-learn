@@ -79,3 +79,27 @@ export const fetchCoursesByCategory = (category:string) => {
         console.error(err);
     }
 }
+
+export const getCartItems = () => {
+    try {
+        return api.get("/cart");
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export const addToCart = (courseId: string) => {
+    try {
+        return api.post("/cart/add", { courseId });
+    } catch (err) {
+        console.error(err);
+    }
+}   
+
+export const removeFromCart = (courseId: string) => {
+    try {
+        return api.post("/cart/remove", { courseId });
+    } catch (err) {
+        console.error(err);
+    }
+}

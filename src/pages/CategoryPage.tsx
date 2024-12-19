@@ -17,13 +17,13 @@ export default function CategoryPage() {
       try {
         const fetchedCourses = await fetchCoursesByCategory(category)
         if (!fetchedCourses) {
-          navigate('/404') // Redirect to 404 if no courses are found
+          // navigate('/') // Redirect to 404 if no courses are found
         } else {
           setCourses(fetchedCourses.data.data)
         }
       } catch (error) {
         console.error("Error fetching courses:", error)
-        navigate('/404')
+        // navigate('/') 
       } finally {
         setLoading(false)
       }
@@ -37,6 +37,6 @@ export default function CategoryPage() {
   }
 
   return (
-    <CategoryCourses category={category} initialCourses={courses} />
+    <CategoryCourses category={category} initialCourses={courses} course={courses[0]} />
   )
 }
