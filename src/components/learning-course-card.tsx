@@ -68,7 +68,7 @@ export function LearningCourseCard({ course, progress=0 }: LearningCourseCardPro
       <CardFooter className="p-4 pt-0">
         <Button className="w-full" onClick={() => {
           // Redirect to course page
-          navigate(`/course/get?courseId=${course._id}`)          
+          navigate(`/course/${course._id}`)          
         }}>
           {progress === 0 ? 'Start Course' : 'Continue Learning'}
         </Button>

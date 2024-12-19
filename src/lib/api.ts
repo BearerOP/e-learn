@@ -66,7 +66,7 @@ export const fetchMyCourse = (page = 1, limit = 10) => {
 
 export const fetchCourse = (id: string) => {
     try {
-        return api.get(`/course/${id}`);
+        return api.get(`/course/get?courseId=${id}`);
     } catch (err) {
         console.error(err);
     }
