@@ -6,6 +6,7 @@ import Profile from '@/pages/Profile';
 import InstructorDashboard from './components/instructor-dashboard';
 import RootLayout from './components/layout/RootLayout';
 import MyLearning from './pages/MyLearning';
+import CourseOverview from './components/course-overview';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-learning" element={<MyLearning />} />
-            
+            <Route path="/course/:courseId" element={<CourseOverview />} />
           </Route>
         </Routes>
         <Toaster duration={5000} position="bottom-right" expand={true} richColors />

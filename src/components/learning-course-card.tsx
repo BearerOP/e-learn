@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Progress } from "@/components/ui/progress"
+import { useNavigate } from 'react-router-dom'
 
 interface LearningCourseCardProps {
   course: Course
@@ -21,6 +22,7 @@ interface LearningCourseCardProps {
 }
 
 export function LearningCourseCard({ course, progress=0 }: LearningCourseCardProps) {
+  const navigate = useNavigate()
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0">
@@ -64,7 +66,10 @@ export function LearningCourseCard({ course, progress=0 }: LearningCourseCardPro
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full">
+        <Button className="w-full" onClick={() => {
+          // Redirect to course page
+          navigate(`/course/get?courseId=${course._id}`)          
+        }}>
           {progress === 0 ? 'Start Course' : 'Continue Learning'}
         </Button>
       </CardFooter>
