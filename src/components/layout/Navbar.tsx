@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
       }
     };
     fetchUserDetails();
-  }, [login]);
+  }, []);
 
   const handleLogout = async () => {
     const authToken = getAuthToken();

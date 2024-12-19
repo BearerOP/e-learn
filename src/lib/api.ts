@@ -55,3 +55,11 @@ export const fetchAllCourse = (page = 1, limit = 10) => {
         console.error(err);
     }
 };
+
+export const fetchMyCourse = (page = 1, limit = 10) => {
+    try {
+        return api.get(`/course/my?page=${page}&limit=${limit}`);
+    } catch (err) {
+        console.error(err);
+    }
+}
