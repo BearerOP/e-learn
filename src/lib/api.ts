@@ -71,3 +71,11 @@ export const fetchCourse = (id: string) => {
         console.error(err);
     }
 }
+
+export const fetchCoursesByCategory = (category:string) => {
+    try {
+        return api.get(`/course/category?category=${category}`);
+    } catch (err) {
+        console.error(err);
+    }
+}

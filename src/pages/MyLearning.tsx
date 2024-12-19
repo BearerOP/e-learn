@@ -1,22 +1,26 @@
+// src/components/MyLearning.tsx
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CourseGrid } from "@/components/course-grid"
 import { UserCourses, CourseCategory } from "@/types/index"
 import { fetchMyCourse } from "@/lib/api"
+import { useTabContext } from '@/contexts/tab-context' // Import the useTabContext hook
 
 export default function MyLearning() {
+  const { activeTab, setActiveTab } = useTabContext() // Access context
   const [userCourses, setUserCourses] = useState<UserCourses | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<CourseCategory>('purchased')
+
+  const navigate = useNavigate()
+  const { category } = useParams()
 
   useEffect(() => {
     const loadCourses = async () => {
       try {
         const response = await fetchMyCourse()
-        console.log("My courses:", response);
-        
         if (response.data.success) {
           setUserCourses(response.data.data)
         } else {
@@ -31,6 +35,12 @@ export default function MyLearning() {
     loadCourses()
   }, [])
 
+  useEffect(() => {
+    if (category && category !== activeTab) {
+      navigate(`/my-learning/${activeTab}`)
+    }
+  }, [activeTab, category, navigate])
+
   const getCourses = () => {
     if (!userCourses) return []
     switch (activeTab) {
@@ -38,8 +48,6 @@ export default function MyLearning() {
         return userCourses.purchasedCourses
       case 'wishlist':
         return userCourses.wishlist
-      case 'cart':
-        return userCourses.cart
       case 'archived':
         return userCourses.archivedCourses
       default:
@@ -50,32 +58,26 @@ export default function MyLearning() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">My Learning</h1>
-      <Tabs defaultValue="purchased" onValueChange={(value) => setActiveTab(value as CourseCategory)}>
+      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as CourseCategory)}>
         <TabsList className="w-fit justify-start  border-b mb-8">
           <TabsTrigger value="purchased">All Courses</TabsTrigger>
           <TabsTrigger value="wishlist">Wishlist</TabsTrigger>
-          <TabsTrigger value="cart">Cart</TabsTrigger>
           <TabsTrigger value="archived">Archived</TabsTrigger>
-          <TabsTrigger value="tools">Learning Tools</TabsTrigger>
+          <TabsTrigger value="learning-tools">Learning Tools</TabsTrigger>
         </TabsList>
 
         <TabsContent value="purchased">
           <CourseGrid courses={getCourses()} loading={loading} category="purchased" />
         </TabsContent>
-        
+
         <TabsContent value="wishlist">
           <CourseGrid courses={getCourses()} loading={loading} category="wishlist" />
         </TabsContent>
-
-        <TabsContent value="cart">
-          <CourseGrid courses={getCourses()} loading={loading} category="cart" />
-        </TabsContent>
-
         <TabsContent value="archived">
           <CourseGrid courses={getCourses()} loading={loading} category="archived" />
         </TabsContent>
 
-        <TabsContent value="tools">
+        <TabsContent value="learning-tools">
           <div className="text-center py-12">
             <h3 className="text-xl font-semibold">Learning tools coming soon!</h3>
             <p className="text-muted-foreground mt-2">

@@ -80,7 +80,7 @@ export interface UserCourses {
   archivedCourses: Course[];
 }
 
-export type CourseCategory = 'purchased' | 'wishlist' | 'cart' | 'archived';
+export type CourseCategory = 'purchased' | 'wishlist' | 'cart' | 'archived' | 'learning-tools';
 
 export type TabType = 'all' | 'lists' | 'wishlist' | 'archived' | 'tools'
 

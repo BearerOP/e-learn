@@ -2,7 +2,6 @@ import { Course, CourseCategory } from "@/types/index"
 import { Skeleton } from "@/components/ui/skeleton"
 import { LearningCourseCard } from "./learning-course-card"
 import { WishlistCourseCard } from "./wishlist-course-card"
-import { CartCourseCard } from "./cart-course-card"
 import { ArchivedCourseCard } from "./archived-course-card"
 
 interface CourseGridProps {
@@ -43,7 +42,6 @@ export function CourseGrid({
         <p className="text-muted-foreground mt-2">
           {category === 'purchased' && "You haven't enrolled in any courses yet."}
           {category === 'wishlist' && "Your wishlist is empty."}
-          {category === 'cart' && "Your cart is empty."}
           {category === 'archived' && "You don't have any archived courses."}
         </p>
       </div>
@@ -58,8 +56,6 @@ export function CourseGrid({
             return <LearningCourseCard key={course._id} course={course} />
           case 'wishlist':
             return <WishlistCourseCard key={course._id} course={course} onAddToCart={onAddToCart} />
-          case 'cart':
-            return <CartCourseCard key={course._id} course={course} onCheckout={onCheckout} />
           case 'archived':
             return <ArchivedCourseCard key={course._id} course={course} onUnarchive={onUnarchive} />
           default:

@@ -21,15 +21,19 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { ModeToggleDropdown } from '../mode-toggle-dropdown';
+import { useTabContext } from '@/contexts/tab-context';
 
 // Reusable component for navigation menu items with links
 const ListItem = ({ title, href, children }) => {
+  const { activeTab, setActiveTab } = useTabContext();
   return (
-    <li>
+<li>
       <NavigationMenuLink asChild>
         <Link
           to={href}
-          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          onClick={() => setActiveTab(href)}  // Set active tab on click
+          className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors 
+            ${activeTab === href ? 'bg-accent text-accent-foreground' : 'hover:bg-accent hover:text-accent-foreground'}`}
         >
           <div className="text-sm font-medium leading-5">{title}</div>
           {children && <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>}
@@ -204,7 +208,7 @@ export const Navbar: React.FC = () => {
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild>
-                <Link to="/wishlist">
+                <Link to="/my-learning/wishlist">
                   <Heart className="h-4 w-4" />
                 </Link>
               </Button>
@@ -283,7 +287,7 @@ const AvatarDropdown = ({ user, onLogout }) => {
 
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link to="/wishlist">
+          <Link to="/my-learning/wishlist">
             <Heart className="mr-2 h-4 w-4" />
             <span>Wishlist</span>
           </Link>
