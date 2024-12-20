@@ -23,32 +23,39 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { ModeToggleDropdown } from '../mode-toggle-dropdown';
 import { useTabContext } from '@/contexts/tab-context';
 
-// Reusable component for navigation menu items with links
+// Reusable ListItem Component for Navigation Menus
 const ListItem = ({ title, href, children }) => {
   const { activeTab, setActiveTab } = useTabContext();
   return (
-<li>
+    <li>
       <NavigationMenuLink asChild>
         <Link
           to={href}
-          onClick={() => setActiveTab(href)}  // Set active tab on click
-          className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors 
-            ${activeTab === href ? 'bg-accent text-accent-foreground' : 'hover:bg-accent hover:text-accent-foreground'}`}
+          onClick={() => setActiveTab(href)}
+          className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors ${activeTab === href
+            ? 'bg-accent text-accent-foreground'
+            : 'hover:bg-accent hover:text-accent-foreground'
+            }`}
         >
           <div className="text-sm font-medium leading-5">{title}</div>
-          {children && <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>}
+          {children && (
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+              {children}
+            </p>
+          )}
         </Link>
       </NavigationMenuLink>
     </li>
   );
 };
 
-export const Navbar: React.FC = () => {
+export const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout, login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Fetch user details on mount if auth token exists
   useEffect(() => {
     const fetchUserDetails = async () => {
       const authToken = getAuthToken();
@@ -68,6 +75,7 @@ export const Navbar: React.FC = () => {
     fetchUserDetails();
   }, []);
 
+  // Handle logout with toast notifications
   const handleLogout = async () => {
     const authToken = getAuthToken();
     if (!authToken) {
@@ -90,10 +98,11 @@ export const Navbar: React.FC = () => {
     navigate('/');
   };
 
+  // Handle search query navigation
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      navigate(`/courses/${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
@@ -101,93 +110,93 @@ export const Navbar: React.FC = () => {
     <nav className="border-b bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className='w-4 h-4'>
-                <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_231_793)">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M50 0H200V50V150L150 200L150 50H0L50 0ZM0 165.067V100L65.067 100L0 165.067ZM100 200H35.7777L100 135.778L100 200Z"
-                      fill="url(#paint0_linear_231_793)" />
-                  </g>
-                  <defs>
-                    <linearGradient id="paint0_linear_231_793" x1="177" y1="-9.23648e-06" x2="39.5" y2="152.5" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="#022c22" />
-                      <stop offset="1" stop-color="#2dd4bf" />
-                    </linearGradient>
-                    <clipPath id="clip0_231_793">
-                      <rect width="200" height="200" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
-              <span className="text-xl font-bold">GyanSagar</span>
-            </Link>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-4 h-4">
+              <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">  <g clip-path="url(#clip0_231_793)">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M50 0H200V50V150L150 200L150 50H0L50 0ZM0 165.067V100L65.067 100L0 165.067ZM100 200H35.7777L100 135.778L100 200Z"
+                  fill="url(#paint0_linear_231_793)" />
+              </g>
+                <defs>
+                  <linearGradient id="paint0_linear_231_793" x1="177" y1="-9.23648e-06" x2="39.5" y2="152.5" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#022c22" />
+                    <stop offset="1" stop-color="#2dd4bf" />
+                  </linearGradient>
+                  <clipPath id="clip0_231_793">
+                    <rect width="200" height="200" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+            <span className="text-xl font-bold">GyanSagar</span>
+          </Link>
 
-            <NavigationMenu className="hidden md:block ml-6">
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[600px] gap-3 p-4 md:grid-cols-2">
-                      <li className="row-span-3">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to="/courses"
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          >
-                            <Book className="h-6 w-6" />
-                            <div className="mt-4 mb-2 text-lg font-medium">
-                              All Courses
-                            </div>
-                            <p className="text-sm leading-tight text-muted-foreground">
-                              Explore our comprehensive learning paths
-                            </p>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <ListItem href="/courses/web-development" title="Web Development">
-                        HTML, CSS, JavaScript, React, Node.js
-                      </ListItem>
-                      <ListItem href="/courses/data-science" title="Data Science">
-                        Python, Machine Learning, Data Analysis
-                      </ListItem>
-                      <ListItem href="/courses/ai" title="Artificial Intelligence">
-                        Machine Learning, Deep Learning, Neural Networks
-                      </ListItem>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+          {/* Navigation Menu */}
+          <NavigationMenu className="hidden md:block ml-6">
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[700px] gap-3 p-4 md:grid-cols-2">
+                    <li className="row-span-3">
+                      <NavigationMenuLink asChild>
+                        <Link
+                          to="/courses/all"
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                        >
+                          <Book className="h-6 w-6" />
+                          <div className="mt-4 mb-2 text-lg font-medium">
+                            All Courses
+                          </div>
+                          <p className="text-sm leading-tight text-muted-foreground">
+                            Explore our comprehensive learning paths
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <ListItem href="/courses/web-development" title="Web Development">
+                      HTML, CSS, JavaScript, React, Node.js
+                    </ListItem>
+                    <ListItem href="/courses/data science" title="Data Science">
+                      Python, Machine Learning, Data Analysis
+                    </ListItem>
+                    <ListItem href="/courses/ai" title="Artificial Intelligence">
+                      Machine Learning, Deep Learning, Neural Networks
+                    </ListItem>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Popular Topics</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 grid-cols-2">
-                      <ListItem href="/topics/ai" title="Artificial Intelligence" >
-                        Machine Learning, Deep Learning
-                      </ListItem>
-                      <ListItem href="/topics/blockchain" title="Blockchain" >
-                        Cryptocurrency, Smart Contracts, Bitcoin
-                      </ListItem>
-                      <ListItem href="/topics/cybersecurity" title="Cybersecurity" >
-                        Ethical Hacking, Penetration Testing
-                      </ListItem>
-                      <ListItem href="/topics/cloud-computing" title="Cloud Computing" >
-                        AWS, Azure, Google Cloud
-                      </ListItem>
-                      <ListItem href="/topics/data-engineering" title="Data Engineering" >
-                        Data Warehousing, ETL, Big Data
-                      </ListItem>
-                      <ListItem href="/topics/mobile-dev" title="Mobile Development" >
-                        Android, iOS, Flutter, React Native
-                      </ListItem>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Popular Topics</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[600px] gap-3 p-4 grid-cols-2">
+                    <ListItem href="/courses/ai" title="Artificial Intelligence" >
+                      Machine Learning, Deep Learning
+                    </ListItem>
+                    <ListItem href="/courses/blockchain" title="Blockchain" >
+                      Cryptocurrency, Smart Contracts, Bitcoin
+                    </ListItem>
+                    <ListItem href="/courses/cybersecurity" title="Cybersecurity" >
+                      Ethical Hacking, Penetration Testing
+                    </ListItem>
+                    <ListItem href="/courses/cloud computing" title="Cloud Computing" >
+                      AWS, Azure, Google Cloud
+                    </ListItem>
+                    <ListItem href="/courses/data engineering" title="Data Engineering" >
+                      Data Warehousing, ETL, Big Data
+                    </ListItem>
+                    <ListItem href="/courses/mobile development" title="Mobile Development" >
+                      Android, iOS, Flutter, React Native
+                    </ListItem>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
 
-          <div className="flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 ">
+
+            {/* Search Bar */}
             <form onSubmit={handleSearch} className="hidden md:flex items-center space-x-2">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -200,31 +209,33 @@ export const Navbar: React.FC = () => {
                 />
               </div>
             </form>
+            {
+              isAuthenticated ? (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/my-learning">
+                      My Learning
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/my-learning/wishlist">
+                      <Heart className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/cart">
+                      <ShoppingCart className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </>
+              ) : (
+         <></>)
+            }
 
-            <div className="hidden md:flex items-center space-x">
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/my-learning">
-                  My Learning
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/my-learning/wishlist">
-                  <Heart className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/cart">
-                  <ShoppingCart className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-
+            {/* Icons and Dropdown */}
             <ModeToggleDropdown />
-
             {isAuthenticated ? (
-              <div className="flex items-center text-sm space-x-4">
-                <AvatarDropdown user={user} onLogout={handleLogout} />
-              </div>
+              <AvatarDropdown user={user} onLogout={handleLogout} />
             ) : (
               <div className="flex space-x-2">
                 <Button variant="outline" size="sm" asChild>
@@ -241,6 +252,7 @@ export const Navbar: React.FC = () => {
     </nav>
   );
 };
+
 
 const AvatarDropdown = ({ user, onLogout }) => {
   return (

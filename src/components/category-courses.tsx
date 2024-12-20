@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Course } from '@/types/index'
 import { CourseCard } from '@/components/course-card'
 import { Input } from '@/components/ui/input'
@@ -19,25 +19,30 @@ interface CategoryCoursesProps {
 }
 
 export default function CategoryCourses({ category, initialCourses }: CategoryCoursesProps) {
-
+  
   const [courses, setCourses] = useState(initialCourses)
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('popularity')
 
   const filteredCourses = courses.filter(course =>
-    course.title.toLowerCase().includes(searchTerm.toLowerCase())
+    course.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    course.createdBy.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    course.category.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const sortedCourses = [...filteredCourses].sort((a, b) => {
     if (sortBy === 'price-low-to-high') return a.price - b.price
     if (sortBy === 'price-high-to-low') return b.price - a.price
     if (sortBy === 'rating') return b.averageRating - a.averageRating
+    if (sortBy === 'a-z') return a.title.localeCompare(b.title)
     // Default to sort by popularity
     return b.totalLearners - a.totalLearners
   })
-  console.log(sortedCourses,'sorted ----------------------');
   
-
+useEffect(() => {
+  setCourses(initialCourses)
+}
+, [initialCourses])
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 capitalize">{category} Courses</h1>
@@ -56,6 +61,7 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="popularity">Most Popular</SelectItem>
+            <SelectItem value="a-z">Alphabetical (a-z) <span>&#9650;</span></SelectItem>
             <SelectItem value="rating">Highest Rated</SelectItem>
             <SelectItem value="price-low-to-high">Price: Low to High</SelectItem>
             <SelectItem value="price-high-to-low">Price: High to Low</SelectItem>

@@ -74,6 +74,7 @@ export const fetchCourse = (id: string) => {
 
 export const fetchCoursesByCategory = (category:string) => {
     try {
+        category = category.toLowerCase().replace(/ /g, "-");
         return api.get(`/course/category?category=${category}`);
     } catch (err) {
         console.error(err);
