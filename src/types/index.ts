@@ -94,6 +94,7 @@ export interface CourseProgress {
   progress: number
   lastAccessed?: Date
 }
+
 export type CourseCategoryType =
   | 'programming'
   | 'design'
