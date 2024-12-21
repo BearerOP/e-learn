@@ -13,6 +13,8 @@ theme: {
 			sm: 'calc(var(--radius) - 4px)'
 		},
 		colors: {
+			'custom-green-text': '#2dd4bf',
+			'custom-green-bg': '#0c3835',
 			background: 'hsl(var(--background))',
 			foreground: 'hsl(var(--foreground))',
 			card: {

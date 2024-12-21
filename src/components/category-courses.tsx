@@ -19,13 +19,13 @@ interface CategoryCoursesProps {
 }
 
 export default function CategoryCourses({ category, initialCourses }: CategoryCoursesProps) {
-  
+
   const [courses, setCourses] = useState(initialCourses)
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState('popularity')
 
   const filteredCourses = courses.filter(course =>
-    course.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     course.createdBy.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     course.category.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -38,15 +38,15 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
     // Default to sort by popularity
     return b.totalLearners - a.totalLearners
   })
-  
-useEffect(() => {
-  setCourses(initialCourses)
-}
-, [initialCourses])
+
+  useEffect(() => {
+    setCourses(initialCourses)
+  }
+    , [initialCourses])
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 capitalize">{category} Courses</h1>
-      
+
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <Input
           type="search"
@@ -72,15 +72,15 @@ useEffect(() => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sortedCourses.map(course => (
           <CourseCard key={course._id}
-          title={course.title}
-          instructor={course.createdBy.username}
-          rating={course.averageRating}
-          totalRatings={course.studentsEnrolled.length}
-          price={course.price}
-          originalPrice={course.price} // Assuming original price is not provided in the new interface
-          thumbnail={course.thumbnail}
-          onAddToCart={course.onAddToCart}
-          onAddToWishlist={course.onAddToWishlist} />
+            title={course.title}
+            instructor={course.createdBy.username}
+            rating={course.averageRating}
+            totalRatings={course.studentsEnrolled.length}
+            price={course.price}
+            originalPrice={course.price} // Assuming original price is not provided in the new interface
+            thumbnail={course.thumbnail}
+            onAddToCart={course.onAddToCart}
+            onAddToWishlist={course.onAddToWishlist} />
         ))}
       </div>
 
