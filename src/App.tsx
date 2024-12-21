@@ -10,7 +10,10 @@ import CourseOverview from './components/course-overview';
 import Courses from './pages/CategoryPage';
 import CartContents from './pages/Cart';
 
+type Theme = "light" | "dark";
 function App() {
+  const theme: Theme = localStorage.getItem("theme") as Theme;
+  
   return (
       <Router>
         <Routes>
@@ -26,7 +29,7 @@ function App() {
             <Route path="/cart" element={<CartContents />} />
           </Route>
         </Routes>
-        <Toaster duration={5000} position="bottom-right" expand={true} richColors />
+        <Toaster duration={5000} position="bottom-right" expand={true} richColors theme={theme} />
       </Router>
   );
 }

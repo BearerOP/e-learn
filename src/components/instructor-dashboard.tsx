@@ -272,7 +272,7 @@ export default function InstructorDashboard() {
                             {activeView === "myCourses" && "My Courses"}
                         </h1>
                     </header>
-                    <main className="flex-1 overflow-auto p-6">
+                    <main className="flex-1 overflow-auto p-6 min-h-[88vh]">
                         {activeView === "dashboard" && (
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                                 <Card>

@@ -45,7 +45,7 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
     , [initialCourses])
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 capitalize">{category} Courses</h1>
+      <h1 className="text-3xl font-bold mb-6 capitalize">Courses Dashboard</h1>
 
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <Input
@@ -86,7 +86,7 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
 
       {sortedCourses.length === 0 && (
         <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold mb-2">No courses found</h2>
+          <h2 className="text-2xl font-semibold mb-2">No courses found for '<span className='font-light text-custom-green-text'>{category}</span>'</h2>
           <p className="text-muted-foreground">Try adjusting your search or filter to find what you're looking for.</p>
         </div>
       )}
