@@ -36,7 +36,7 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
     if (sortBy === 'rating') return b.averageRating - a.averageRating
     if (sortBy === 'a-z') return a.title.localeCompare(b.title)
     // Default to sort by popularity
-    return b.totalLearners - a.totalLearners
+    // return b.totalLearners - a.totalLearners
   })
 
   useEffect(() => {
@@ -71,16 +71,9 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {sortedCourses.map(course => (
-          <CourseCard key={course._id}
-            title={course.title}
-            instructor={course.createdBy.username}
-            rating={course.averageRating}
-            totalRatings={course.studentsEnrolled.length}
-            price={course.price}
-            originalPrice={course.price} // Assuming original price is not provided in the new interface
-            thumbnail={course.thumbnail}
-            onAddToCart={course.onAddToCart}
-            onAddToWishlist={course.onAddToWishlist} />
+          <CourseCard
+          course={course}
+          />
         ))}
       </div>
 

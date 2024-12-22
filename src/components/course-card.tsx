@@ -1,30 +1,14 @@
 import { Heart, ShoppingCart, Star, StarHalf } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { useNavigate } from 'react-router-dom'
+import { CourseCardProps } from '@/types'
 
-interface CourseCardProps {
-  title: string
-  instructor: string
-  rating: number
-  totalRatings: number
-  price: number
-  originalPrice: number
-  thumbnail: string
-  onAddToCart?: () => void
-  onAddToWishlist?: () => void
-}
 
-export function CourseCard({
-  title,
-  instructor,
-  rating,
-  totalRatings,
-  price,
-  originalPrice,
-  thumbnail,
-  onAddToCart,
-  onAddToWishlist
-}: CourseCardProps) {
+export const CourseCard: React.FC<CourseCardProps> = ({course}) => {
+  
+  const navigate = useNavigate()
+
   // Format number with commas
   const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -71,17 +55,19 @@ export function CourseCard({
   }
 
   return (
+  <>
+
     <Card className="group relative min-w-[278px] overflow-hidden transition-all hover:shadow-lg">
       <div className="relative aspect-video overflow-hidden">
         <img
-          src={thumbnail}
-          alt={title}
+          src={course?.thumbnail}
+          alt={course?.title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {/* Hover Actions */}
         <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <Button
-            onClick={onAddToCart}
+            onClick={course?.onAddToCart}
             variant="secondary"
             size="sm"
             className="flex items-center gap-2"
@@ -90,7 +76,7 @@ export function CourseCard({
             Add to cart
           </Button>
           <Button
-            onClick={onAddToWishlist}
+            onClick={course?.onAddToWishlist}
             variant="secondary"
             size="icon"
             className="h-8 w-8"
@@ -101,17 +87,17 @@ export function CourseCard({
       </div>
       <CardContent className="p-4">
         <div className="space-y-3">
-          <h3 className="line-clamp-2 font-bold">{title}</h3>
-          <p className="text-sm text-muted-foreground">{instructor}</p>
+          <h3 className="line-clamp-2 font-bold">{course?.title}</h3>
+          <p className="text-sm text-muted-foreground">{course?.createdBy?.username}</p>
           <div className="flex items-center gap-2">
-            {rating > 0 ? (
+            {course?.averageRating > 0 ? (
               <>
-                <span className="font-bold">{rating.toFixed(1)}</span>
+                <span className="font-bold">{course?.averageRating.toFixed(1)}</span>
                 <div className="flex items-center">
-                  {renderRatingStars(rating)}
+                  {renderRatingStars(course?.averageRating)}
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  ({formatNumber(totalRatings)})
+                  ({formatNumber(course?.averageRating)})
                 </span>
               </>
             ) : (
@@ -126,16 +112,26 @@ export function CourseCard({
             )}
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-bold">{formatPrice(price)}</span>
-            {originalPrice !== price && (
+            <span className="font-bold">{formatPrice(course?.price)}</span>
+            {course?.price !== course?.price && (
               <span className="text-sm text-muted-foreground line-through">
-                {formatPrice(originalPrice)}
+                {formatPrice(course?.price)}
               </span>
             )}
           </div>
         </div>
       </CardContent>
-    </Card>
+    <CardFooter className="">
+    <Button className="w-full" onClick={() => {
+      // Redirect to course page
+      navigate(`/course/${course?._id}`)          
+    }} >
+      Preview Course
+    </Button>
+  </CardFooter>
+  </Card>
+
+  </>
   )
 }
 

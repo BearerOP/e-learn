@@ -57,15 +57,7 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
         {courses.map((course) => (
           <CourseCard
             key={course._id}
-            title={course.title}
-            instructor={course.createdBy.username}
-            rating={course.averageRating}
-            totalRatings={course.studentsEnrolled.length}
-            price={course.price}
-            originalPrice={course.price} // Assuming original price is not provided in the new interface
-            thumbnail={course.thumbnail}
-            onAddToCart={course.onAddToCart}
-            onAddToWishlist={course.onAddToWishlist}
+            course={course}
           />
         ))}
       </div>

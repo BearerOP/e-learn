@@ -84,11 +84,6 @@ export type CourseCategory = 'purchased' | 'wishlist' | 'cart' | 'archived' | 'l
 
 export type TabType = 'all' | 'lists' | 'wishlist' | 'archived' | 'tools'
 
-export interface MyLearningProps {
-  courses: Course[]
-  loading?: boolean
-}
-
 export interface CourseProgress {
   courseId: string
   progress: number
@@ -181,3 +176,7 @@ export const courseSubCategories: CourseSubCategory = {
   // Add similar structures for other categories...
   other: [{ key: 'other', displayName: 'Other' }],
 };
+
+export interface CourseCardProps {
+  course: Course
+}

@@ -103,11 +103,14 @@ export default function CourseOverview() {
             </div>
 
             <Card className="aspect-video relative overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center bg-black">
-                <Button size="lg" variant="secondary" className="gap-2">
-                  <Play className="h-6 w-6" />
-                  Preview this course
-                </Button>
+              <div
+              className="absolute inset-0 flex items-center justify-center bg-black bg-cover bg-center "
+              style={{ backgroundImage: `url(${course.thumbnail})` }}
+              >
+              <Button size="lg" variant="secondary" className="gap-2">
+                <Play className="h-6 w-6" />
+                Preview this course
+              </Button>
               </div>
             </Card>
 

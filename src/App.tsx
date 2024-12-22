@@ -27,6 +27,12 @@ function App() {
             <Route path="/course/:courseId" element={<CourseOverview />} />
             <Route path="/courses/:category" element={<Courses />} />
             <Route path="/cart" element={<CartContents />} />
+            <Route path="/course/player" element={<>
+            
+            <video poster="https://i.ytimg.com/vi/gBMQisvWCLY/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDeUNbsXn8E_g0fhwTr2HLZD_Vn2Q" controls autoPlay src="
+            https://firebasestorage.googleapis.com/v0/b/theslugproject.appspot.com/o/gyansagar-courses%2Fweek1%2FJs-Basics.mov?alt=media&token=8814c902-161b-4397-9c17-b3361aeebd19"></video>
+            </>} />
+
           </Route>
         </Routes>
         <Toaster duration={5000} position="bottom-right" expand={true} richColors theme={theme} />

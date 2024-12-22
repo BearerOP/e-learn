@@ -53,7 +53,7 @@ export function CourseGrid({
       {courses.map((course) => {
         switch (category) {
           case 'purchased':
-            return <LearningCourseCard key={course._id} course={course} />
+            return <LearningCourseCard progress={0} key={course._id} course={course} />
           case 'wishlist':
             return <WishlistCourseCard key={course._id} course={course} onAddToCart={onAddToCart} />
           case 'archived':
