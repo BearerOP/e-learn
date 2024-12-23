@@ -13,30 +13,14 @@ import { Course } from '@/types'
 export default function CourseOverview() {
   const { courseId } = useParams<{ courseId: string }>()
   const [loading, setLoading] = useState(true)
-  const [course, setCourse] = useState<Course>({
-    _id: '',
-    title: '',
-    description: '',
-    price: 0,
-    thumbnail: '',
-    category: '',
-    createdBy: {
-      _id: '',
-      email: '',
-      username: '',
-    },
-    tracks: [],
-    studentsEnrolled: [],
-    reviews: [],
-    averageRating: 0,
-    status: '',
-  })
+  const [course, setCourse] = useState<Course>()
 
   useEffect(() => {
+    window.scrollTo(0, 0) // Scroll to top of the page on component mount
     const loadCourse = async () => {
       try {
         console.log('Fetching course:', courseId);
-        
+
         const response = await fetchCourse(courseId)
         if (response.data.success) {
           setCourse(response.data.data)
@@ -44,7 +28,7 @@ export default function CourseOverview() {
           console.error('Failed to fetch courses:', response.data.message)
         }
         console.log('Course:', course);
-        
+
         setLoading(false)
       } catch (error) {
         console.error('Error fetching courses:', error)
@@ -53,6 +37,10 @@ export default function CourseOverview() {
     }
     loadCourse()
   }, [courseId])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -104,13 +92,13 @@ export default function CourseOverview() {
 
             <Card className="aspect-video relative overflow-hidden">
               <div
-              className="absolute inset-0 flex items-center justify-center bg-black bg-cover bg-center "
-              style={{ backgroundImage: `url(${course.thumbnail})` }}
+                className="absolute inset-0 flex items-center justify-center bg-black bg-cover bg-center "
+                style={{ backgroundImage: `url(${course.thumbnail})` }}
               >
-              <Button size="lg" variant="secondary" className="gap-2">
-                <Play className="h-6 w-6" />
-                Preview this course
-              </Button>
+                <Button size="lg" variant="secondary" className="gap-2">
+                  <Play className="h-6 w-6" />
+                  Preview this course
+                </Button>
               </div>
             </Card>
 

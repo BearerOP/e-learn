@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { fetchAllCourse } from "@/lib/api"
+import { addToCart, fetchAllCourse } from "@/lib/api"
 import { toast } from "sonner"
 import { CourseCarousel } from "@/components/course-carousel"
 import { HeroCarousel } from "@/components/hero-carousel"
@@ -49,10 +49,18 @@ export default function Dashboard() {
     loadCourses()
   }, [])
 
-  const handleAddToCart = (courseId: string) => {
-    console.log("Adding to cart:", courseId)
-    toast.success("Course added to cart")
-    // Add your cart logic here
+  const handleAddToCart = async (courseId: string) => {
+    try {
+      const response = await addToCart(courseId)
+      if (!response) {
+        toast.error("Failed to add course to cart. Please try again.")
+        return
+      }
+      toast.success(response.data.message)
+    } catch (error) {
+      console.error("Error adding course to cart:", error)
+      toast.error(error.response?.data?.message || "Failed to add course to cart. Please try again.")
+    }
   }
 
   const handleAddToWishlist = (courseId: string) => {
@@ -84,29 +92,29 @@ export default function Dashboard() {
     <>
       <div className="space-y-12 p-6">
         <HeroCarousel items={courseItems} />
-        <CourseCarousel 
-          title="Recommended for you" 
+        <CourseCarousel
+          title="Recommended for you"
           courses={getRandomCourses(10).map(course => ({
             ...course,
             onAddToCart: () => handleAddToCart(course._id),
             onAddToWishlist: () => handleAddToWishlist(course._id)
-          }))} 
+          }))}
         />
-        <CourseCarousel 
-          title="Top Rated Courses" 
+        <CourseCarousel
+          title="Top Rated Courses"
           courses={getTopRatedCourses(10).map(course => ({
             ...course,
             onAddToCart: () => handleAddToCart(course._id),
             onAddToWishlist: () => handleAddToWishlist(course._id)
-          }))} 
+          }))}
         />
-        <CourseCarousel 
-          title="All Courses" 
+        <CourseCarousel
+          title="All Courses"
           courses={courses.map(course => ({
             ...course,
             onAddToCart: () => handleAddToCart(course._id),
             onAddToWishlist: () => handleAddToWishlist(course._id)
-          }))} 
+          }))}
         />
       </div>
     </>

@@ -7,8 +7,8 @@ import InstructorDashboard from './components/instructor-dashboard';
 import RootLayout from './components/layout/RootLayout';
 import MyLearning from './pages/MyLearning';
 import CourseOverview from './components/course-overview';
-import Courses from './pages/CategoryPage';
 import CartContents from './pages/Cart';
+import CategoryPage from './pages/CategoryPage';
 
 type Theme = "light" | "dark";
 function App() {
@@ -25,7 +25,7 @@ function App() {
             <Route path="/my-learning" element={<MyLearning />} />
             <Route path="/my-learning/:category" element={<MyLearning />} />
             <Route path="/course/:courseId" element={<CourseOverview />} />
-            <Route path="/courses/:category" element={<Courses />} />
+            <Route path="/courses/:category" element={<CategoryPage />} />
             <Route path="/cart" element={<CartContents />} />
             <Route path="/course/player" element={<>
             
