@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Trash2 } from 'lucide-react'
 import { getCartItems, removeFromCart } from '@/lib/api'
+import { toast } from 'sonner'
 
 export default function CartContents() {
   const [cartItems, setCartItems] = useState<Course[]>([])
@@ -19,8 +20,18 @@ export default function CartContents() {
   }, [])
 
   const handleRemoveItem = async (courseId: string) => {
-    await removeFromCart(courseId)
+   try {
+    const response = await removeFromCart(courseId)
+    if (!response) {
+      toast.error("Failed to remove course from cart. Please try again.")
+      return
+    }
     setCartItems(cartItems.filter(item => item._id !== courseId))
+    toast.success(response?.data?.message)
+   } catch (error) {
+      console.error("Error removing course from cart:", error)
+      toast.error(error.response?.data?.message || "Failed to remove course from cart. Please try again.")
+   }
   }
 
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0)
