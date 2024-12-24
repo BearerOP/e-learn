@@ -51,16 +51,9 @@ import { useAuth } from "@/contexts/auth-context"
 import { getAuthToken, logout as apiLogout } from "@/lib/api"
 import { toast } from "sonner"
 import { ModeToggle } from "./mode-toggle"
-
-
-const categories = [
-    "Web Development",
-    "Mobile Development",
-    "Data Science",
-    "Machine Learning",
-    "Design",
-    "Business",
-]
+import { courseCategories, courseCategoryDisplayName, courseSubCategories, Tags as tags } from "@/types"
+import { Badge } from "./ui/badge"
+import { FileUpload } from "./ui/file-upload"
 
 let instructorData = {
     username: "John Doe",
@@ -71,6 +64,32 @@ let instructorData = {
     totalEarnings: 9876.54,
 }
 export default function InstructorDashboard() {
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [newTag, setNewTag] = useState<string>("");
+    const [files, setFiles] = useState<File[]>([]);
+    const handleFileUpload = (files: File[]) => {
+        setFiles(files);
+        console.log(files);
+    };
+
+    const handleAddTag = () => {
+        if (selectedTags.length < 5 && newTag && !selectedTags.includes(newTag)) {
+            setSelectedTags([...selectedTags, newTag]);
+            setNewTag("");
+        }
+    };
+
+    const handleRemoveTag = (tag: string) => {
+        setSelectedTags(selectedTags.filter((t) => t !== tag));
+    };
+    const handleCategoryChange = (value: string) => {
+        setSelectedCategory(value);
+        setSelectedSubCategory(null);
+    };
+
+    const subCategories = selectedCategory ? courseSubCategories[selectedCategory] || [] : [];
 
     const { user, logout } = useAuth();
 
@@ -342,24 +361,100 @@ export default function InstructorDashboard() {
                                                 <Label htmlFor="price">Price</Label>
                                                 <Input id="price" placeholder="Enter course price" type="number" />
                                             </div>
+                                            {/* Category Dropdown */}
                                             <div className="flex flex-col space-y-1.5">
                                                 <Label htmlFor="category">Category</Label>
-                                                <Select>
+                                                <Select onValueChange={handleCategoryChange}>
                                                     <SelectTrigger id="category">
                                                         <SelectValue placeholder="Select a category" />
                                                     </SelectTrigger>
                                                     <SelectContent position="popper">
-                                                        {categories.map((category) => (
-                                                            <SelectItem key={category} value={category.toLowerCase()}>
-                                                                {category}
+                                                        {courseCategories.map((category) => (
+                                                            <SelectItem key={category} value={category}>
+                                                                {courseCategoryDisplayName[category]}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+
+                                            {/* Sub-Category Dropdown */}
+                                            <div className="flex flex-col space-y-1.5">
+                                                <Label htmlFor="sub-category">Sub-Category</Label>
+                                                <Select
+                                                    disabled={!subCategories.length}
+                                                    onValueChange={(value) => setSelectedSubCategory(value)}
+                                                >
+                                                    <SelectTrigger id="sub-category">
+                                                        <SelectValue placeholder="Select a sub-category" />
+                                                    </SelectTrigger>
+                                                    <SelectContent position="popper">
+                                                        {subCategories.map((subCategory) => (
+                                                            <SelectItem key={subCategory.key} value={subCategory.key}>
+                                                                {subCategory.displayName}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
                                             </div>
                                             <div className="flex flex-col space-y-1.5">
+                                                <Label htmlFor="new-tag">
+                                                    Add a Tag
+                                                </Label>
+                                                <div className="flex flex-row items-center space-x-2">
+                                                    <Input
+                                                        type="text"
+                                                        id="new-tag"
+                                                        value={newTag}
+                                                        onChange={(e) => setNewTag(e.target.value)}
+                                                        placeholder="Enter a tag"
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        onClick={handleAddTag}
+                                                        disabled={!newTag || selectedTags.length >= 5 || selectedTags.includes(newTag)}
+                                                    >
+                                                        Add Tag
+                                                    </Button>
+                                                </div>
+                                            </div>
+
+                                            {/* Display Added Tags */}
+                                            <div className="flex space-x-2">
+                                                {selectedTags.map((tag) => (
+                                                    <Badge
+                                                        key={tag}
+                                                        className="flex items-center space-x-2 bg-custom-green-bg text-custom-green-text hover:bg-slate-800 outline-lime-50"
+                                                    >
+                                                        <span>{tag}</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleRemoveTag(tag)}
+                                                            className="text-red-500"
+                                                        >
+                                                            &times;
+                                                        </button>
+                                                    </Badge>
+                                                ))}
+                                            </div>
+
+                                            {/* Suggest tags if input matches existing ones */}
+                                            {newTag && !selectedTags.includes(newTag) && tags.includes(newTag) && (
+                                                <div className="mt-2 text-gray-500">
+                                                    <p>Suggested tag: {newTag}</p>
+                                                </div>
+                                            )}
+
+                                            {/* Display Max Tags Reached Warning */}
+                                            {selectedTags.length === 5 && (
+                                                <p className="text-red-500 mt-2">You have reached the maximum number of tags (5).</p>
+                                            )}
+                                            <div className="flex flex-col space-y-2">
                                                 <Label htmlFor="thumbnail">Thumbnail</Label>
-                                                <Input id="thumbnail" type="file" />
+
+                                                <div className="w-full  mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+                                                    <FileUpload onChange={handleFileUpload} />
+                                                </div>
                                             </div>
                                             <Button type="submit">Create Course</Button>
                                         </div>
