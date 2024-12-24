@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { FileUpload } from "@/components/ui/file-upload"
 import { courseCategories, courseCategoryDisplayName, courseSubCategories, Tags as tags } from "@/types"
+import { toast } from "sonner"
+import { createCourse } from "@/lib/api"
 
 export function CreateCourseForm() {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -40,6 +42,30 @@ export function CreateCourseForm() {
 
     const subCategories = selectedCategory ? courseSubCategories[selectedCategory] || [] : [];
 
+
+    async function formSubmition(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        try {
+            const body = {
+                title: e.currentTarget.title.value,
+                description: e.currentTarget.description.value,
+                price: e.currentTarget.price.value,
+                category: selectedCategory!,
+                subCategory: selectedSubCategory!,
+                tags: selectedTags,
+                thumbnail: 'thumbnail.png',
+            };
+            const response = await createCourse(body);
+            if (response) {
+                toast.success(response.data.message);
+            } else {
+                toast.error('Failed to create course. Please try again.');
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to create course. Please try again.');
+        }
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -47,7 +73,12 @@ export function CreateCourseForm() {
                 <CardDescription>Fill in the details to create a new course.</CardDescription>
             </CardHeader>
             <CardContent>
-                <form>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    formSubmition(e);
+
+                }
+                }>
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="title">Course Title</Label>
@@ -59,7 +90,7 @@ export function CreateCourseForm() {
                         </div>
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="price">Price</Label>
-                            <Input id="price" placeholder="Enter course price" type="number" />
+                            <Input id="price" placeholder="Enter course price (in INR ₹)" type="number" />
                         </div>
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="category">Category</Label>

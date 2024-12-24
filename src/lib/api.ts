@@ -105,3 +105,11 @@ export const removeFromCart = (courseId: string) => {
         console.error(err);
     }
 }
+
+export const createCourse = (formData: FormData) => {
+    try {
+        return api.post("/course/add", formData);
+    } catch (err) {
+        console.error(err);
+    }
+}

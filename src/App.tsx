@@ -3,7 +3,7 @@ import { Toaster } from 'sonner';
 import { LoginForm } from '@/components/auth/LoginForm';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
-import InstructorDashboard from './components/instructor-dashboard';
+import InstructorDashboard from './pages/InstructorDashboard';
 import RootLayout from './components/layout/RootLayout';
 import MyLearning from './pages/MyLearning';
 import CourseOverview from './components/course-overview';
