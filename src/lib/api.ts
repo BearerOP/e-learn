@@ -2,7 +2,7 @@ import axios from "axios";
 import { Role } from "../types";
 
 export const api = axios.create({
-    baseURL: "http://localhost:3000/api/v1",
+    baseURL: "https://e-learn-backend-6qyz.onrender.com/api/v1",
 });
 
 export const setAuthToken = (token: string) => {
