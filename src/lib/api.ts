@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Role } from "../types";
+import { CreateCourseData, Role } from "../types";
 
 export const api = axios.create({
     // baseURL: "https://e-learn-backend-6qyz.onrender.com/api/v1",
@@ -106,7 +106,7 @@ export const removeFromCart = (courseId: string) => {
     }
 }
 
-export const createCourse = (formData: FormData) => {
+export const createCourse = (formData: CreateCourseData) => {
     try {
         return api.post("/course/add", formData);
     } catch (err) {

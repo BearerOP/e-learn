@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronRight, Clock, Globe, Play, Star } from 'lucide-react'
+import { Clock, Globe, Play, Star } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -45,19 +45,6 @@ export default function CourseOverview() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6">
-        {/* Breadcrumb */}
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
-          <Link to="/courses" className="hover:text-primary">
-            {course.category}
-          </Link>
-          <ChevronRight className="h-4 w-4" />
-          <Link to="/courses/programming" className="hover:text-primary">
-            Programming Languages
-          </Link>
-          <ChevronRight className="h-4 w-4" />
-          <span>SQL</span>
-        </nav>
-
         {/* Course Content */}
         <div className="grid gap-6 md:grid-cols-3">
           <div className="md:col-span-2 space-y-6">

@@ -357,3 +357,22 @@ export const Tags = [
   'user-experience',
   
 ]
+
+export interface CreateCourseData {
+    title: string,
+    description: string,
+    price: number,
+    category: string,
+    subCategory: string,
+    tags: string[],
+    thumbnail: string,
+}export interface Track {
+  _id: string
+  title: string
+  description: string
+  type: "folder" | "video" | "text"
+  videoUrl?: string
+  content?: string
+  subTracks?: Track[]
+}
+

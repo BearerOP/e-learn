@@ -124,7 +124,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         <CardFooter className="">
           <Button className="w-full" onClick={() => {
             // Redirect to course page
-            navigate(`/course/${course?._id}`)
+            navigate(`/course/overview/${course?._id}`)
           }} >
             Preview Course
           </Button>
