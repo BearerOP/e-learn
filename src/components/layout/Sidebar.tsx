@@ -18,8 +18,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Link, useNavigate } from "react-router-dom"
-import { ModeToggle } from "./mode-toggle"
+import { Link } from "react-router-dom"
+import { ModeToggle } from "@/components/mode-toggle"
 
 interface SidebarProps {
     instructorData: {
@@ -34,8 +34,6 @@ interface SidebarProps {
 }
 
 export function InstructorSidebar({ instructorData, setActiveView, navigateProfile, navigateHome, handleLogout }: SidebarProps) {
-
-    const navigate = useNavigate();
     return (
         <Sidebar variant="inset">
             <SidebarHeader>
@@ -58,21 +56,19 @@ export function InstructorSidebar({ instructorData, setActiveView, navigateProfi
             <SidebarContent>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={() => {
-                            navigate("/instructor/dashboard");
-                        }}>
+                        <SidebarMenuButton onClick={() => setActiveView("")}>
                             <BookOpen />
                             <span>Dashboard</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={() => setActiveView("createCourse")}>
+                        <SidebarMenuButton onClick={() => setActiveView("create-course")}>
                             <PlusCircle />
                             <span>Create Course</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={() => setActiveView("myCourses")}>
+                        <SidebarMenuButton onClick={() => setActiveView("courses")}>
                             <BookOpen />
                             <span>My Courses</span>
                         </SidebarMenuButton>

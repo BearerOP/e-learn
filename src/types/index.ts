@@ -37,7 +37,7 @@ export interface Course {
     email: string;
     username: string;
   };
-  tracks: string[];
+  tracks: Track[];
   studentsEnrolled: string[];
   reviews: {
     _id: string;
@@ -355,17 +355,17 @@ export const Tags = [
   'design-tools',
   'graphic-design',
   'user-experience',
-  
+
 ]
 
 export interface CreateCourseData {
-    title: string,
-    description: string,
-    price: number,
-    category: string,
-    subCategory: string,
-    tags: string[],
-    thumbnail: string,
+  title: string,
+  description: string,
+  price: number,
+  category: string,
+  subCategory: string,
+  tags: string[],
+  thumbnail: string,
 }export interface Track {
   _id: string
   title: string
@@ -376,3 +376,18 @@ export interface CreateCourseData {
   subTracks?: Track[]
 }
 
+
+
+export interface InstructorData {
+  username: string;
+  email: string;
+  avatar: string;
+  publishedCourses: number;
+  totalStudents: number;
+  totalEarnings: number;
+}
+export interface CourseContextType {
+  courses: Course[];
+  setCourses: (courses: Course[]) => void;
+  instructorData: InstructorData;
+}

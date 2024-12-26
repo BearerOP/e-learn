@@ -1,25 +1,27 @@
-import React from 'react'
+import { useState } from 'react'
 import { Search, PlusCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Progress } from "@/components/ui/progress"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CourseTracksManagement } from '@/components/tracks-management'
+import { Course } from '@/types'
 
 interface CourseManagementProps {
   setActiveView: (view: string) => void;
+  courses: Course[]
+  onUpdateCourse: (updatedCourse: Course) => void
 }
 
-export function CourseManagement({ setActiveView }: CourseManagementProps) {
+export function CourseManagement({ courses, onUpdateCourse,setActiveView }: CourseManagementProps) {
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
   const handleNewCourse = () => {
     setActiveView("createCourse");
   };
+
+  const handleCourseClick = (course: Course) => {
+    setSelectedCourse(course)
+  }
 
   return (
     <div className="space-y-6">
@@ -43,79 +45,59 @@ export function CourseManagement({ setActiveView }: CourseManagementProps) {
               </SelectContent>
             </Select>
           </div>
-          <Button 
-            size="default" 
-            variant="default" 
-            className="bg-[#8b5cf6] text-white hover:bg-[#7c3aed]"
-            onClick={handleNewCourse}
-          >
+          <Button onClick={handleNewCourse}>
             <PlusCircle className="mr-2 h-4 w-4" />
             New course
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="overflow-hidden">
-          <CardHeader className="border-b p-0">
-            <div className="relative aspect-video">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/0" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="text-lg font-semibold text-white">Learn NextJs in 1 hour</h3>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="rounded-full bg-white/20 px-2 py-0.5 text-xs font-medium text-white">
-                    DRAFT
-                  </span>
-                  <span className="rounded-full bg-white/20 px-2 py-0.5 text-xs font-medium text-white">
-                    Public
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="p-4">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Finish your course</span>
-                <span className="font-medium">25%</span>
-              </div>
-              <Progress value={25} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Example course cards */}
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Card key={i} className="overflow-hidden">
-            <CardHeader className="border-b p-0">
-              <div className="relative aspect-video">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/0" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-semibold text-white">Course Title {i + 2}</h3>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="rounded-full bg-white/20 px-2 py-0.5 text-xs font-medium text-white">
-                      {i % 2 === 0 ? 'PUBLISHED' : 'DRAFT'}
-                    </span>
+      {selectedCourse ? (
+        <CourseTracksManagement 
+          course={selectedCourse} 
+          onUpdateCourse={(updatedCourse) => {
+            onUpdateCourse(updatedCourse)
+            setSelectedCourse(updatedCourse)
+          }}
+        />
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {courses.map((course) => (
+            <Card 
+              key={course._id} 
+              className="overflow-hidden cursor-pointer" 
+              onClick={() => handleCourseClick(course)}
+            >
+              <CardHeader className="border-b p-0">
+                <div className="relative aspect-video">
+                  <img src={course.thumbnail} alt={course.title} className="object-cover w-full h-full" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/0" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-lg font-semibold text-white">{course.title}</h3>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                        course.status === "published"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}>
+                        {course.status.toUpperCase()}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Course progress</span>
-                  <span className="font-medium">{(i + 1) * 20}%</span>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Enrolled Students</span>
+                    <span className="font-medium">{course.studentsEnrolled.length}</span>
+                  </div>
                 </div>
-                <Progress value={(i + 1) * 20} className="h-2" />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="mt-8 text-center text-muted-foreground">
-        Based on your experience, we think these resources will be helpful.
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

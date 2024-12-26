@@ -113,3 +113,11 @@ export const createCourse = (formData: CreateCourseData) => {
         console.error(err);
     }
 }
+
+export const getInstructorCourses = () => {
+    try {
+        return api.get("/course/instructor");
+    } catch (err) {
+        console.error(err);
+    }
+}
