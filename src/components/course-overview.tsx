@@ -160,7 +160,7 @@ export default function CourseOverview() {
                       left at this price!
                     </div>
                     <div className="flex gap-2">
-                      <Button className="flex-1">Add to cart</Button>
+                      <Button  className="flex-1">Add to cart</Button>
                       <Button variant="outline" size="icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

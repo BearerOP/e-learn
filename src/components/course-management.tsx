@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CourseTracksManagement } from '@/components/tracks-management'
 import { Course } from '@/types'
+import { useNavigate } from 'react-router-dom'
 
 interface CourseManagementProps {
   setActiveView: (view: string) => void;
@@ -22,6 +23,8 @@ export function CourseManagement({ courses, onUpdateCourse,setActiveView }: Cour
   const handleCourseClick = (course: Course) => {
     setSelectedCourse(course)
   }
+
+  const navigate = useNavigate()
 
   return (
     <div className="space-y-6">
@@ -45,7 +48,9 @@ export function CourseManagement({ courses, onUpdateCourse,setActiveView }: Cour
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={handleNewCourse}>
+          <Button onClick={()=>{
+            navigate("/instructor/create-course");
+          }}>
             <PlusCircle className="mr-2 h-4 w-4" />
             New course
           </Button>

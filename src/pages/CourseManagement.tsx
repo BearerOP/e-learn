@@ -1,6 +1,4 @@
 import { useOutletContext } from "react-router-dom"
-
-
 import { CourseManagement as CourseManagementComponent } from "@/components/course-management"
 import { CourseContextType } from "@/types";
 
@@ -16,9 +14,9 @@ export default function CourseManagement() {
 
     return (
         <CourseManagementComponent 
+        setActiveView={() => ''}
             courses={courses} 
             onUpdateCourse={handleUpdateCourse}
         />
     )
 }
-
