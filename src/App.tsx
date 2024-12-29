@@ -13,6 +13,7 @@ import CategoryPage from './pages/CategoryPage';
 import CourseContent from './pages/CourseContent';
 import CourseManagement from './pages/CourseManagement';
 import CreateCourse from './pages/CreateCourse';
+import { CourseContentView } from './components/tracks';
 
 type Theme = "light" | "dark";
 
@@ -29,6 +30,7 @@ function App() {
         </Route>
 
         <Route path="/" element={<RootLayout />} >
+        <Route path="/course/player" element={<CourseContentView />}/>
           <Route index element={<Dashboard />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="profile" element={<Profile />} />

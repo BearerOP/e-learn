@@ -2,7 +2,7 @@ import { Track } from "@/types/index"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 
 interface CourseGridProps {
@@ -11,6 +11,9 @@ interface CourseGridProps {
 }
 
 export function TrackGrid({ tracks, loading }: CourseGridProps) {
+
+  const navigate = useNavigate();
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -44,13 +47,35 @@ export function TrackGrid({ tracks, loading }: CourseGridProps) {
             <CardTitle>{track.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">{track.description}</p>
+            <p className="text-sm text-muted-foreground line-clamp-2">{track.description}</p>
           </CardContent>
           <CardFooter className="mt-auto">
             <Button asChild className="w-full">
-              <Link to={`/my-learning/course/${track._id}`}>
-                Start Learning
-              </Link>
+              {
+                (track.type==="folder")
+                ? <Link to={`/my-learning/course/${track._id}`}>View Tracks</Link>
+                : <Button 
+                onClick={() => {
+                  navigate(`/course/player`, {
+                    state: { 
+                      videoContents: [
+                        {
+                          _id: track._id,
+                          title: track.title,
+                          type: track.type,
+                          description: track.description,
+                          videoUrl: track.videoUrl
+                        }
+                      ] 
+                    }
+                  })
+                }} 
+                className="w-full"
+              >
+                Watch Video
+              </Button>
+
+              }
             </Button>
           </CardFooter>
         </Card>

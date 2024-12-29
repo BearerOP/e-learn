@@ -366,7 +366,9 @@ export interface CreateCourseData {
   subCategory: string,
   tags: string[],
   thumbnail: string,
-}export interface Track {
+}
+
+export interface Track {
   _id: string
   title: string
   description: string

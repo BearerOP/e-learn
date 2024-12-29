@@ -60,7 +60,7 @@ export default function MyLearning() {
       <h1 className="text-4xl font-bold mb-8">My Learning</h1>
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as CourseCategory)}>
         <TabsList className="w-fit justify-start  border-b mb-8">
-          <TabsTrigger value="purchased">All Courses</TabsTrigger>
+          <TabsTrigger value="purchased">Purchased Courses</TabsTrigger>
           <TabsTrigger value="wishlist">Wishlist</TabsTrigger>
           <TabsTrigger value="archived">Archived</TabsTrigger>
           <TabsTrigger value="learning-tools">Learning Tools</TabsTrigger>

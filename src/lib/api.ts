@@ -121,3 +121,11 @@ export const getInstructorCourses = () => {
         console.error(err);
     }
 }
+
+export const getCourseContent = (courseId: string) => {
+    try {
+        return api.get(`/course/content?courseId=${courseId}`);
+    } catch (err) {
+        console.error(err);
+    }
+}
