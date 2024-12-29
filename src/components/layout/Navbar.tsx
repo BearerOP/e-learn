@@ -325,7 +325,7 @@ const AvatarDropdown = ({ user, onLogout }) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link to='/instructor/courses'>
+          <Link to='/instructor'>
             <GraduationCap className="mr-2 h-4 w-4" />
             <span>Switch to Instructor</span>
           </Link>

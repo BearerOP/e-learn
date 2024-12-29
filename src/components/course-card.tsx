@@ -4,8 +4,12 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { useNavigate } from 'react-router-dom'
 import { Course } from '@/types'
 
+interface CourseCardProps {
+  course: Course
+}
 
-export const CourseCard: React.FC<Course> = ( course ) => {
+
+export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
   const navigate = useNavigate()
 
