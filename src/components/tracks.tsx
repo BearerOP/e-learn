@@ -10,6 +10,7 @@ import MinimalLoaderComponent from "./ui/minimal-loader"
 import { Separator } from "./ui/separator"
 import { Slider } from "@/components/ui/slider"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import {Skeleton} from "@/components/ui/skeleton"
 
 interface VideoContent {
   _id: string
@@ -204,6 +205,9 @@ export function CourseContentView() {
               <MinimalLoaderComponent barColor={'#2dd4bf'} />
             </div>
           )}
+          {isLoading && (
+            <Skeleton className="absolute inset-0 w-full h-full" />
+          )}
           {isYoutube ? (
             <iframe
               src={videoUrl}
@@ -229,9 +233,9 @@ export function CourseContentView() {
               {showPlayPauseIcon && (
                 <div className="absolute inset-0 flex items-center justify-center z-20">
                   {isPlaying ? (
-                    <Pause size={48} className="text-white opacity-75" />
+                    <Pause size={48} fill={'#2dd4bf'} className="text-[#2dd4bf] opacity-75" />
                   ) : (
-                    <Play size={48} className="text-white opacity-75" />
+                    <Play size={48}  fill={'#2dd4bf'} className="text-[#2dd4bf] opacity-75" />
                   )}
                 </div>
               )}
@@ -261,7 +265,7 @@ export function CourseContentView() {
                         max={1}
                         step={0.1}
                         onValueChange={(value) => handleVolumeChange(value[0])}
-                        className="w-24"
+                        className="w-24 bg-custom-green-bg"
                       />
                     </div>
                     <span>{formatTime(currentTime)} / {formatTime(duration)}</span>
@@ -332,4 +336,3 @@ export function CourseContentView() {
     </Card>
   );
 }
-
