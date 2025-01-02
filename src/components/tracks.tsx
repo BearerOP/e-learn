@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { getVideoUrl, isYoutubeUrl } from "@/utils/videoUtils"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronDown, ChevronUp, Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Maximize, Minimize, PictureInPicture2 } from 'lucide-react'
@@ -186,7 +186,7 @@ export function CourseContentView() {
   };
 
   return (
-    <Card className={`max-w-full mx-auto relative ${isFullScreen ? 'h-screen' : 'min-h-screen'}`} ref={containerRef}>
+    <div className={`max-w-full mx-auto relative ${isFullScreen ? 'h-screen' : 'min-h-screen'}`} ref={containerRef}>
       <CardHeader className={`${isFullScreen ? 'hidden' : ''}`}>
         <Button variant="link" onClick={() => navigate(-1)} className="absolute top-4 right-4">
           <ChevronLeft size={24} />
@@ -248,17 +248,17 @@ export function CourseContentView() {
                 <div className="flex items-center justify-between text-white">
                   <div className="flex items-center space-x-2">
                     <Button variant="ghost" size="icon" onClick={handlePlayPause}>
-                      {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+                      {isPlaying ? <Pause fill="white" size={24} /> : <Play fill="white" size={24} />}
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleSeek(currentTime - 10)}>
-                      <SkipBack size={24} />
+                      <SkipBack fill="white" size={24} />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleSeek(currentTime + 10)}>
-                      <SkipForward size={24} />
+                      <SkipForward fill="white" size={24} />
                     </Button>
                     <div className="flex items-center space-x-2">
                       <Button variant="ghost" size="icon" onClick={handleMuteToggle}>
-                        {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+                        {isMuted ? <VolumeX fill="white" size={24} /> : <Volume2 fill="white" size={24} />}
                       </Button>
                       <Slider
                         value={[volume]}
@@ -315,7 +315,7 @@ export function CourseContentView() {
           )}
         </div>
         <div className={`prose max-w-none 'fixed bottom-0 left-0 right-0 bg-background p-4 shadow-lg'}`}>
-            <Separator />
+            <Separator className='my-2' />
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-xl font-semibold">Description</h2>
             <Button variant="ghost" size="sm" onClick={toggleDescription}>
@@ -333,6 +333,6 @@ export function CourseContentView() {
           <p className={isDescriptionExpanded ? '' : 'line-clamp-2'}>{selectedVideo.description}</p>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 }

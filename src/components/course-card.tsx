@@ -1,6 +1,6 @@
 import { Heart, ShoppingCart, Star, StarHalf } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { useNavigate } from 'react-router-dom'
 import { Course } from '@/types'
 
