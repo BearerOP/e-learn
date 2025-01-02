@@ -129,3 +129,12 @@ export const getCourseContent = (courseId: string) => {
         console.error(err);
     }
 }
+
+
+export const getTrackContent = (trackId: string) => {
+    try {
+        return api.get(`/course/content/track?trackId=${trackId}`);
+    } catch (err) {
+        console.error(err);
+    }
+}

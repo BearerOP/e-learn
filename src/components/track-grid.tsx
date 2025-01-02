@@ -53,7 +53,7 @@ export function TrackGrid({ tracks, loading }: CourseGridProps) {
             <Button asChild className="w-full">
               {
                 (track.type==="folder")
-                ? <Link to={`/my-learning/course/${track._id}`}>View Tracks</Link>
+                ? <Link to={`/my-learning/course/track/${track._id}`}>View Tracks</Link>
                 : <Button 
                 onClick={() => {
                   navigate(`/course/player`, {

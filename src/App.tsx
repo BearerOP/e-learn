@@ -14,6 +14,7 @@ import CourseContent from './pages/CourseContent';
 import CourseManagement from './pages/CourseManagement';
 import CreateCourse from './pages/CreateCourse';
 import { CourseContentView } from './components/tracks';
+import TrackContent from './pages/TrackContent';
 
 type Theme = "light" | "dark";
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="courses/:category" element={<CategoryPage />} />
           <Route path="cart" element={<CartContents />} />
           <Route path="my-learning/course/:courseId" element={<CourseContent/>} />
+          <Route path="my-learning/course/track/:trackId" element={<TrackContent/>} />
         </Route>
       </Routes>
       <Toaster duration={5000} position="bottom-right" expand={true} richColors theme={theme} />
