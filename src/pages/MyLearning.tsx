@@ -56,7 +56,7 @@ export default function MyLearning() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container min-h-[85vh] mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">My Learning</h1>
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as CourseCategory)}>
         <TabsList className="w-fit justify-start  border-b mb-8">
