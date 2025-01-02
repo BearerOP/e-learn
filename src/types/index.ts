@@ -19,12 +19,6 @@ export interface AuthState {
 
 export type Role = 'both' | 'student';
 
-export interface CarouselItem {
-  id: string;
-  title: string;
-  imageUrl: string;
-}
-
 export interface Course {
   _id: string;
   title: string;

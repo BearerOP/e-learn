@@ -16,13 +16,10 @@ export default function TrackContent() {
     const timer = setTimeout(() => {
       setLoading(false)
     }, 1000)
-
     
     const fetchTrackContent = async () => {
       try {
         const response = await getTrackContent(trackId)
-        console.log(response.data);
-        
         setTrackContent(response.data.data)
         setTrackTitle(response.data.trackTitle)
         setLoading(false)

@@ -1,32 +1,79 @@
 'use client'
 
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Pause, Play, Star, StarHalf } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useCarousel } from '../hooks/useCarousel'
-import { CarouselItem } from '../types/index'
+import { Course } from '../types/index'
 
 interface CourseCarouselProps {
-  items: CarouselItem[]
+  items: Course[]
 }
 
 export function HeroCarousel({ items }: CourseCarouselProps) {
   const { currentIndex, next, prev, goTo, isAutoScrolling, toggleAutoScroll } = useCarousel(items.length)
+  const renderRatingStars = (rating: number) => {
+    const stars = []
+    const totalStars = 5
+    const fullStars = Math.floor(rating)
+    const hasHalfStar = rating % 1 !== 0
 
+    for (let i = 0; i < totalStars; i++) {
+      if (i < fullStars) {
+        stars.push(
+          <Star
+            key={`star-${i}`}
+            className="h-4 w-4 fill-yellow-400 text-yellow-400"
+          />
+        )
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(
+          <StarHalf
+            key="half-star"
+            className="h-4 w-4 fill-yellow-400 text-yellow-400"
+          />
+        )
+      } else {
+        stars.push(
+          <Star
+            key={`star-${i}`}
+            className="h-4 w-4 text-gray-300"
+          />
+        )
+      }
+    }
+
+    return stars
+  }
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       <Card className="overflow-hidden">
         <CardContent className="p-0">
           <div className="relative aspect-video">
             <img
-              src={items[currentIndex].imageUrl}
+              src={items[currentIndex].thumbnail}
               alt={items[currentIndex].title}
               className="object-cover h-full w-full"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
-              <h3 className="text-white text-2xl font-bold p-4">
-                {items[currentIndex].title}
-              </h3>
+            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end justify-bottom p-4 pb-6">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+              <div className="w-full md:w-3/4 lg:w-1/2 relative">
+                <div className="relative z-10 p-4">
+                  <h3 className="text-white text-xl md:text-2xl lg:text-3xl font-bold">
+                    {items[currentIndex].title}
+                  </h3>
+                  <h2 className="text-white/90 text-sm md:text-md lg:text-md">
+                    {items[currentIndex].description}
+                  </h2>
+                  <span className="">
+                    Created by: {items[currentIndex]?.createdBy.username}
+                  </span>
+                  <span className="font-bold"></span>
+                  <div className="flex items-center">
+                    {renderRatingStars(items[currentIndex]?.averageRating)}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -52,9 +99,8 @@ export function HeroCarousel({ items }: CourseCarouselProps) {
             key={index}
             variant="outline"
             size="sm"
-            className={`w-2 h-2 rounded-full p-0 ${
-              index === currentIndex ? 'bg-primary' : 'bg-secondary'
-            }`}
+            className={`w-2 h-2 rounded-full p-0 ${index === currentIndex ? 'bg-primary' : 'bg-secondary'
+              }`}
             onClick={() => goTo(index)}
           >
             <span className="sr-only">Go to slide {index + 1}</span>
@@ -80,4 +126,3 @@ export function HeroCarousel({ items }: CourseCarouselProps) {
     </div>
   )
 }
-
