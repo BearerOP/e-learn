@@ -61,7 +61,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   return (
     <>
 
-      <Card className="group relative min-w-[278px] overflow-hidden transition-all hover:shadow-lg">
+      <Card className="group relative min-w-[278px] overflow-hidden transition-all hover:scale-[101%] duration-300 hover:shadow-lg dark:hover:shadow-white/10">
         <div className="relative aspect-video overflow-hidden">
           <img
             src={course?.thumbnail}
@@ -89,7 +89,10 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             </Button>
           </div>
         </div>
-        <CardContent className="p-4">
+        <CardContent onClick={() => {
+            // Redirect to course page
+            navigate(`/course/overview/${course?._id}`)
+          }} className="p-4 cursor-pointer ">
           <div className="space-y-3">
             <h3 className="line-clamp-2 font-bold">{course?.title}</h3>
             <p className="text-sm text-muted-foreground">{course?.createdBy?.username}</p>
@@ -125,14 +128,14 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="">
+        {/* <CardFooter className="">
           <Button className="w-full" onClick={() => {
             // Redirect to course page
             navigate(`/course/overview/${course?._id}`)
           }} >
             Preview Course
           </Button>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
 
     </>
