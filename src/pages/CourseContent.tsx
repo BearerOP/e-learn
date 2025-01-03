@@ -23,7 +23,6 @@ export default function CourseContent() {
         console.error(err)
       }
     }
-    
     fetchCourseContent();
   }, [])
 

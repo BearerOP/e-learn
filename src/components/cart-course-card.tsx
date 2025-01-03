@@ -20,6 +20,8 @@ interface CartCourseCardProps {
 }
 
 export function CartCourseCard({ course, onCheckout }: CartCourseCardProps) {
+
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0">

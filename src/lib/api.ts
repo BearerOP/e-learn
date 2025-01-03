@@ -73,7 +73,7 @@ export const fetchCourse = (id: string) => {
     }
 }
 
-export const fetchCoursesByCategory = (category:string) => {
+export const fetchCoursesByCategory = (category: string) => {
     try {
         category = category.toLowerCase().replace(/ /g, "-");
         return api.get(`/course/category?category=${category}`);
@@ -96,7 +96,7 @@ export const addToCart = (courseId: string) => {
     } catch (err) {
         console.error(err);
     }
-}   
+}
 
 export const removeFromCart = (courseId: string) => {
     try {
@@ -138,3 +138,18 @@ export const getTrackContent = (trackId: string) => {
         console.error(err);
     }
 }
+
+export const createOrder = ({
+    amount,
+    currency,
+}: {
+    amount: number,
+    currency: string
+}) => {
+    try {
+        return api.post("/order/create", { amount, currency });
+    } catch (err) {
+        console.error(err);
+    }
+}
+

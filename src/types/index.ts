@@ -387,3 +387,15 @@ export interface CourseContextType {
   setCourses: (courses: Course[]) => void;
   instructorData: InstructorData;
 }
+
+export interface RazorpayResponse {
+  razorpay_payment_id: string
+  razorpay_order_id: string
+  razorpay_signature: string
+}
+
+export interface PaymentDetails {
+  orderId: string
+  amount: number
+  currency: string
+}

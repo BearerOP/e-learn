@@ -36,6 +36,10 @@ export default function CartContents() {
 
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0)
 
+  const onCheckout = () => {
+    toast.info("Redirecting to checkout page...")
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
@@ -77,7 +81,7 @@ export default function CartContents() {
               <CardContent className="p-4">
                 <h2 className="text-xl font-semibold mb-4">Total:</h2>
                 <p className="text-3xl font-bold mb-6">₹{totalPrice.toFixed(2)}</p>
-                <Button className="w-full">Checkout</Button>
+                <Button onClick={onCheckout} className="w-full">Checkout</Button>
               </CardContent>
             </Card>
           </div>
