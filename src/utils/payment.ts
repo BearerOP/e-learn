@@ -1,7 +1,7 @@
-import { loadScript } from "../utils/loadscript"
+import { loadscript } from "../utils/loadscript"
 
 export async function initializeRazorpay(): Promise<boolean> {
-  const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+  const res = await loadscript("https://checkout.razorpay.com/v1/checkout.js")
   return res;
 }
 
