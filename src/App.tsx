@@ -44,7 +44,7 @@ function App() {
           <Route path="my-learning/course/track/:trackId" element={<TrackContent/>} />
         </Route>
       </Routes>
-      <Toaster duration={5000} position="bottom-right" expand={true} richColors theme={theme} />
+      <Toaster closeButton position="bottom-right" richColors theme={theme} />
     </Router>
   );
 }

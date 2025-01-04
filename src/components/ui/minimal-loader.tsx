@@ -37,7 +37,7 @@ const Bar = styled.div<BarProps>`
 `;
 
 // Use styled-components to create the React component
-const MinimalLoaderComponent = ({ barColor }) => {
+const MinimalLoaderComponent = ({ barColor='#2dd4bf' }) => {
   const bars = Array.from({ length: 8 }, (_, index) => 45 * index);
 
   return (
