@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { Button } from "./ui/button";
 import favicon from "../../favicon.svg";
 import { useAuth } from "@/contexts/auth-context";
 import { Course, PaymentDetails } from "@/types";
-// import { initializeRazorpay } from "@/utils/payment";
 import { createOrder as createOrderApi, purchaseCourse as purchaseCourseApi } from "@/lib/api";
 import Razorpay from "react-razorpay/dist/razorpay";
 import { toast } from "sonner";
@@ -21,12 +20,6 @@ export default function CheckoutButton({
   const [isProcessing, setIsProcessing] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   initializeRazorpay().catch((error) =>
-  //     console.error("Failed to initialize Razorpay:", error)
-  //   );
-  // }, []);
 
   const createOrderFunction = async (): Promise<PaymentDetails | null> => {
     try {
