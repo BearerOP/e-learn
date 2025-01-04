@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateCourseData, Role } from "../types";
+import { Course, CreateCourseData, Role } from "../types";
 
 export const api = axios.create({
     // baseURL: "https://e-learn-backend-6qyz.onrender.com/api/v1",
@@ -153,3 +153,10 @@ export const createOrder = ({
     }
 }
 
+export const purchaseCourse = (items: Course[]) => {
+    try {
+        return api.post("/course/purchase", { items });
+    } catch (err) {
+        console.error(err);
+    }
+}
