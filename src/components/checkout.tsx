@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import favicon from "../../favicon.svg";
 import { useAuth } from "@/contexts/auth-context";
 import { Course, PaymentDetails } from "@/types";
-import { initializeRazorpay } from "@/utils/loadscript";
+import { loadscript } from "@/utils/loadscript";
 import { createOrder as createOrderApi, purchaseCourse as purchaseCourseApi } from "@/lib/api";
 import Razorpay from "react-razorpay/dist/razorpay";
 import { toast } from "sonner";
@@ -23,7 +23,7 @@ export default function CheckoutButton({
   const navigate = useNavigate();
 
   useEffect(() => {
-    initializeRazorpay().catch((error) =>
+    loadscript("https://checkout.razorpay.com/v1/checkout.js").catch((error) =>
       console.error("Failed to initialize Razorpay:", error)
     );
   }, []);
