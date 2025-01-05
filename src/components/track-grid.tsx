@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Link, useNavigate } from "react-router-dom"
-
+import { motion } from "framer-motion"
 
 interface CourseGridProps {
   tracks: Track[]
@@ -42,6 +42,16 @@ export function TrackGrid({ tracks, loading }: CourseGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {tracks.map((track) => (
+        <motion.div
+          key={track._id}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+          }}
+          >
+
         <Card key={track._id} className="flex flex-col">
           <CardHeader>
             <CardTitle>{track.title}</CardTitle>
@@ -79,6 +89,8 @@ export function TrackGrid({ tracks, loading }: CourseGridProps) {
             </Button>
           </CardFooter>
         </Card>
+        </motion.div>
+
       ))}
     </div>
   )

@@ -3,15 +3,47 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useNavigate } from 'react-router-dom'
 import { Course } from '@/types'
+import { addToCart } from '@/lib/api'
+import { toast } from 'sonner'
 
 interface CourseCardProps {
   course: Course
 }
 
-
 export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
   const navigate = useNavigate()
+
+  const handleAddToCart = async (courseId: string) => {
+    try {
+      const response = await addToCart(courseId);
+      if (!response) {
+        toast.error("Failed to add course to cart. Please try again.");
+        return;
+      }
+      toast.success(response.data.message, 
+        {
+          action: {
+            label: 'Go to Cart',
+            onClick: () => {
+              navigate('/cart');
+            },
+            actionButtonStyle: {
+              backgroundColor: '#2dd4bf',
+              color:'#0c3835',
+            },
+          },
+          duration: 5000,
+        }
+      );
+    } catch (error) {
+      console.error("Error adding course to cart:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to add course to cart. Please try again."
+      );
+    }
+  };
 
   // Format number with commas
   const formatNumber = (num: number) => {
@@ -71,7 +103,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           {/* Hover Actions */}
           <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <Button
-              onClick={course?.onAddToCart}
+              onClick={() => handleAddToCart(course?._id)}
               variant="secondary"
               size="sm"
               className="flex items-center gap-2"
@@ -141,4 +173,3 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
     </>
   )
 }
-

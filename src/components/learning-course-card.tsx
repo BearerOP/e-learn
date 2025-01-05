@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Progress } from "@/components/ui/progress"
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 interface LearningCourseCardProps {
   course: Course
@@ -24,6 +25,14 @@ interface LearningCourseCardProps {
 export function LearningCourseCard({ course, progress=0 }: LearningCourseCardProps) {
   const navigate = useNavigate()
   return (
+    <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+          }}
+          >
     <Card className="overflow-hidden">
       <CardHeader className="p-0">
         <div className="relative aspect-video">
@@ -31,7 +40,7 @@ export function LearningCourseCard({ course, progress=0 }: LearningCourseCardPro
             src={course.thumbnail}
             alt={course.title}
             className="object-cover w-full h-full"
-          />
+            />
           <div className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
             <Button variant="secondary" size="sm" className="gap-2">
               <Play className="w-4 h-4" />
@@ -74,6 +83,7 @@ export function LearningCourseCard({ course, progress=0 }: LearningCourseCardPro
         </Button>
       </CardFooter>
     </Card>
+          </motion.div>
   )
 }
 
