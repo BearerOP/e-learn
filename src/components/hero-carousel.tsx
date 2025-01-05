@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useCarousel } from '../hooks/useCarousel'
 import { Course } from '../types/index'
+import { useNavigate } from 'react-router-dom'
 
 interface CourseCarouselProps {
   items: Course[]
 }
 
 export function HeroCarousel({ items }: CourseCarouselProps) {
+  const navigate = useNavigate();
   const { currentIndex, next, prev, goTo, isAutoScrolling, toggleAutoScroll } = useCarousel(items.length)
   const renderRatingStars = (rating: number) => {
     const stars = []
@@ -47,7 +49,11 @@ export function HeroCarousel({ items }: CourseCarouselProps) {
   }
   return (
     <div className="relative w-full max-w-5xl mx-auto">
-      <Card className="overflow-hidden">
+      <Card onClick={
+        () => {
+          navigate('/course/overview/' + items[currentIndex]._id);
+        }
+      } className="overflow-hidden cursor-pointer">
         <CardContent className="p-0">
           <div className="relative aspect-video">
             <img
@@ -79,14 +85,14 @@ export function HeroCarousel({ items }: CourseCarouselProps) {
         </CardContent>
       </Card>
 
-      <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
+      <div className="absolute top-1/2 left-4 xl:-left-16 transform -translate-y-1/2">
         <Button variant="outline" size="icon" onClick={prev} className="rounded-full">
           <ChevronLeft className="h-4 w-4" />
           <span className="sr-only">Previous course</span>
         </Button>
       </div>
 
-      <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
+      <div className="absolute top-1/2 right-4 xl:-right-16 transform -translate-y-1/2">
         <Button variant="outline" size="icon" onClick={next} className="rounded-full">
           <ChevronRight className="h-4 w-4" />
           <span className="sr-only">Next course</span>
