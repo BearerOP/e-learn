@@ -1,4 +1,3 @@
-// src/components/MyLearning.tsx
 "use client"
 
 import { useEffect, useState } from 'react'
@@ -9,6 +8,7 @@ import { UserCourses, CourseCategory } from "@/types/index"
 import { fetchMyCourse } from "@/lib/api"
 import { useTabContext } from '@/contexts/tab-context'
 import { motion } from 'framer-motion'
+
 
 export default function MyLearning() {
   window.scrollTo(0, 0);
@@ -41,7 +41,7 @@ export default function MyLearning() {
     if (category && category !== activeTab) {
       navigate(`/my-learning/${activeTab}`)
     }
-  }, [activeTab, category, navigate])
+  }, [activeTab, category])
 
   const getCourses = () => {
     if (!userCourses) return []
