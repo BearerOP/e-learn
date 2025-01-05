@@ -6,12 +6,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import { useCarousel } from '../hooks/useCarousel'
 import { Course } from '../types/index'
 import { useNavigate } from 'react-router-dom'
+import MinimalLoaderComponent from './ui/minimal-loader'
 
 interface CourseCarouselProps {
+  loading: boolean
   items: Course[]
 }
 
-export function HeroCarousel({ items }: CourseCarouselProps) {
+export function HeroCarousel({loading, items }: CourseCarouselProps) {
   const navigate = useNavigate();
   const { currentIndex, next, prev, goTo, isAutoScrolling, toggleAutoScroll } = useCarousel(items.length)
   const renderRatingStars = (rating: number) => {
@@ -47,6 +49,14 @@ export function HeroCarousel({ items }: CourseCarouselProps) {
 
     return stars
   }
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+          <MinimalLoaderComponent />
+        </div>
+      )
+    }
+  
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       <Card onClick={
@@ -59,6 +69,7 @@ export function HeroCarousel({ items }: CourseCarouselProps) {
             <img
               src={items[currentIndex].thumbnail}
               alt={items[currentIndex].title}
+              loading="lazy"
               className="object-cover h-full w-full"
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end justify-bottom p-4 pb-6">

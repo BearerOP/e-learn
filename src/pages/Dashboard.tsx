@@ -8,6 +8,7 @@ import { HeroCarousel } from "@/components/hero-carousel";
 import { Course } from "@/types";
 import MinimalLoaderComponent from "@/components/ui/minimal-loader";
 import { useNavigate } from "react-router-dom";
+import { LazyMotion,domAnimation } from "motion/react";
 
 export default function Dashboard() {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -65,13 +66,13 @@ export default function Dashboard() {
     // Add your wishlist logic here
   };
 
-  if (loading) {
-    return (
-      <div className="flex h-[90vh] items-center justify-center bg-black">
-        <MinimalLoaderComponent />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex h-[90vh] items-center justify-center bg-black">
+  //       <MinimalLoaderComponent />
+  //     </div>
+  //   );
+  // }
 
   // Function to get random courses
   const getRandomCourses = (count: number) => {
@@ -88,8 +89,10 @@ export default function Dashboard() {
 
   return (
     <>
+    <LazyMotion features={domAnimation}>
+
       <div className="space-y-12 p-6">
-        <HeroCarousel items={getTopRatedCourses(5)} />
+        <HeroCarousel loading={loading} items={getTopRatedCourses(5)} />
         <CourseCarousel
           title="Recommended for you"
           courses={getRandomCourses(10).map((course) => ({
@@ -115,6 +118,8 @@ export default function Dashboard() {
           }))}
         />
       </div>
+    </LazyMotion>
     </>
+
   );
 }
