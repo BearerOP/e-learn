@@ -11,6 +11,7 @@ import { FileUpload } from "@/components/ui/file-upload"
 import { courseCategories, courseCategoryDisplayName, courseSubCategories, Tags as tags } from "@/types"
 import { toast } from "sonner"
 import { createCourse } from "@/lib/api"
+import { motion } from "framer-motion"
 
 export function CreateCourseForm() {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -67,6 +68,14 @@ export function CreateCourseForm() {
     }
 
     return (
+        <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut",
+        }}>
+
         <Card>
             <CardHeader>
                 <CardTitle>Create New Course</CardTitle>
@@ -182,6 +191,8 @@ export function CreateCourseForm() {
                 </form>
             </CardContent>
         </Card>
+        </motion.div>
+
     )
 }
 

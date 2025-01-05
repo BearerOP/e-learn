@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CourseTracksManagement } from '@/components/tracks-management'
 import { Course } from '@/types'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 interface CourseManagementProps {
   setActiveView: (view: string) => void;
@@ -14,11 +15,8 @@ interface CourseManagementProps {
   onUpdateCourse: (updatedCourse: Course) => void
 }
 
-export function CourseManagement({ courses, onUpdateCourse,setActiveView }: CourseManagementProps) {
+export function CourseManagement({ courses, onUpdateCourse }: CourseManagementProps) {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
-  const handleNewCourse = () => {
-    setActiveView("createCourse");
-  };
 
   const handleCourseClick = (course: Course) => {
     setSelectedCourse(course)
@@ -27,7 +25,13 @@ export function CourseManagement({ courses, onUpdateCourse,setActiveView }: Cour
   const navigate = useNavigate()
 
   return (
-    <div className="space-y-6">
+    <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut",
+        }} className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Courses</h1>
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
@@ -103,7 +107,7 @@ export function CourseManagement({ courses, onUpdateCourse,setActiveView }: Cour
           ))}
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }
 

@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BookOpen, GraduationCap, CreditCard, BadgeCheck } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface DashboardCardsProps {
     instructorData: {
@@ -11,7 +12,14 @@ interface DashboardCardsProps {
 
 export function DashboardCards({ instructorData }: DashboardCardsProps) {
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                duration: 0.3,
+                ease: "easeInOut",
+            }}
+        className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
@@ -56,7 +64,7 @@ export function DashboardCards({ instructorData }: DashboardCardsProps) {
                     <div className="text-2xl font-bold">4.8</div>
                 </CardContent>
             </Card>
-        </div>
+        </motion.div>
     )
 }
 
