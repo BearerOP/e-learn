@@ -15,6 +15,7 @@ import CourseManagement from './pages/CourseManagement';
 import CreateCourse from './pages/CreateCourse';
 import { CourseContentView } from './components/tracks';
 import TrackContent from './pages/TrackContent';
+import { SignupForm } from './components/auth/SignupForm';
 
 type Theme = "light" | "dark";
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/course/player" element={<CourseContentView />}/>
           <Route index element={<Dashboard />} />
           <Route path="login" element={<LoginForm />} />
+          <Route path="register" element={<SignupForm />} />
           <Route path="profile" element={<Profile />} />
           <Route path="my-learning" element={<MyLearning />} />
           <Route path="my-learning/:category" element={<MyLearning />} />

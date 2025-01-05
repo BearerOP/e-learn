@@ -2,8 +2,8 @@ import axios from "axios";
 import { Course, CreateCourseData, Role } from "../types";
 
 export const api = axios.create({
-    baseURL: "https://e-learn-backend-6qyz.onrender.com/api/v1",
-    // baseURL: "http://localhost:3000/api/v1",
+    // baseURL: "https://e-learn-backend-6qyz.onrender.com/api/v1",
+    baseURL: "http://localhost:3000/api/v1",
 });
 
 export const setAuthToken = (token: string) => {
@@ -33,6 +33,7 @@ api.interceptors.request.use(
     }
 );
 
+
 export const getMe = () => {
     return api.get("/user/me");
 };
@@ -41,8 +42,8 @@ export const login = (email: string, password: string) => {
     return api.post("/user/login", { email, password });
 };
 
-export const register = (username: string, role: Role, email: string, password: string) => {
-    return api.post("/user/register", { username, role, email, password });
+export const register = (email: string, username: string,  password: string) => {
+    return api.post("/user/register", { username, email, password });
 };
 
 export const logout = (authToken: string) => {
