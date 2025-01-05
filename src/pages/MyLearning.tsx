@@ -7,7 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CourseGrid } from "@/components/course-grid"
 import { UserCourses, CourseCategory } from "@/types/index"
 import { fetchMyCourse } from "@/lib/api"
-import { useTabContext } from '@/contexts/tab-context' // Import the useTabContext hook
+import { useTabContext } from '@/contexts/tab-context'
+import { motion } from 'framer-motion'
 
 export default function MyLearning() {
   window.scrollTo(0, 0);
@@ -57,7 +58,13 @@ export default function MyLearning() {
   }
 
   return (
-    <div className="container min-h-[85vh] mx-auto px-4 py-8">
+    <motion.div
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{
+        duration: 0.3,
+        ease: "easeInOut",
+    }} className="container min-h-[85vh] mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">My Learning</h1>
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as CourseCategory)}>
         <TabsList className="w-fit justify-start  border-b mb-8">
@@ -87,6 +94,6 @@ export default function MyLearning() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </motion.div>
   )
 }

@@ -9,16 +9,26 @@ import { getCartItems, removeFromCart } from "@/lib/api";
 import { toast } from "sonner";
 import CheckoutButton from "@/components/checkout";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import MinimalLoaderComponent from "@/components/ui/minimal-loader";
 
 export default function CartContents() {
   const [cartItems, setCartItems] = useState<Course[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchCartItems = async () => {
-      const items = await getCartItems();
-      setCartItems(items.data.cart);
+      try {
+        const items = await getCartItems();
+        setCartItems(items.data.cart);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+        toast.error("Failed to fetch cart items. Please try again.");
+      } finally {
+        setLoading(false);
+      }
     };
     fetchCartItems();
   }, []);
@@ -51,53 +61,81 @@ export default function CartContents() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
-      {cartItems.length === 0 ? (
-        <div className="text-center py-12">
+      {loading ? (
+        <MinimalLoaderComponent />
+      ) : cartItems.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+          }}
+          className="text-center py-12"
+        >
           <h2 className="text-2xl font-semibold mb-2">Your cart is empty</h2>
           <p className="text-muted-foreground mb-4">
             Looks like you haven't added any courses yet.
           </p>
-          <Button onClick={()=>navigate('/')}>Browse Courses</Button>
-        </div>
+          <Button onClick={() => navigate("/")}>Browse Courses</Button>
+        </motion.div>
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
           <div className="md:col-span-2 space-y-4">
             {cartItems.map((item) => (
-              <Card key={item._id}>
-                <CardContent className="flex items-center p-4">
-                  <img
-                    src={item.thumbnail}
-                    alt={item.title}
-                    className="w-24 h-16 object-cover rounded mr-4"
-                  />
-                  <div className="flex-grow">
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Created By:</strong>{" "}
-                      {item.createdBy?.username || "Unknown"}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Average Rating:</strong>{" "}
-                      {item.averageRating
-                        ? item.averageRating.toFixed(1)
-                        : "N/A"}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold">₹{item.price}</p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRemoveItem(item._id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={item._id}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut",
+                }}
+              >
+                <Card>
+                  <CardContent className="flex items-center p-4">
+                    <img
+                      src={item.thumbnail}
+                      alt={item.title}
+                      className="w-24 h-16 object-cover rounded mr-4"
+                    />
+                    <div className="flex-grow">
+                      <h3 className="font-semibold">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Created By:</strong>{" "}
+                        {item.createdBy?.username || "Unknown"}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Average Rating:</strong>{" "}
+                        {item.averageRating
+                          ? item.averageRating.toFixed(1)
+                          : "N/A"}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold">₹{item.price}</p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveItem(item._id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
-          <div>
+          <motion.div
+            
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+            }}
+            >
             <Card>
               <CardContent onClick={onCheckout} className="p-4">
                 <h2 className="text-xl font-semibold mb-4">Total:</h2>
@@ -111,7 +149,7 @@ export default function CartContents() {
                 />
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

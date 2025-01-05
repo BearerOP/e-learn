@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { motion } from 'framer-motion'
 
 interface CategoryCoursesProps {
   category: string
@@ -44,7 +45,13 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
   }
     , [initialCourses])
   return (
-    <div className="container mx-auto px-4 py-8">
+    <motion.div
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{
+        duration: 0.3,
+        ease: "easeInOut",
+    }} className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 capitalize">Courses Dashboard</h1>
 
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
@@ -83,7 +90,7 @@ export default function CategoryCourses({ category, initialCourses }: CategoryCo
           <p className="text-muted-foreground">Try adjusting your search or filter to find what you're looking for.</p>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }
 
