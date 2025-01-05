@@ -11,6 +11,7 @@ export default function CategoryPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!category) return // Skip fetching if category is not available yet
 
     const fetchCourses = async () => {

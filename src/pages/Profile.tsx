@@ -13,7 +13,7 @@ import { getAuthToken, logout as apiLogout } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-
+  window.scrollTo(0, 0);
   const navigate = useNavigate();
   const { logout, user } = useAuth();
   const [logoutLoading, setLogoutLoading] = useState(false);

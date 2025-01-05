@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { login as apiLogin, setAuthToken } from '@/lib/api';
 
 export const LoginForm: React.FC = () => {
+  window.scrollTo(0, 0);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigate = useNavigate();

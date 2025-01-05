@@ -13,6 +13,7 @@ export default function TrackContent() {
   const [trackTitle, setTrackTitle] = useState<string>("")
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const timer = setTimeout(() => {
       setLoading(false)
     }, 1000)

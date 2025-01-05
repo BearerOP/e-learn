@@ -8,6 +8,7 @@ import { Github } from 'lucide-react';
 import { register as apiSignup } from '@/lib/api';
 
 export const SignupForm: React.FC = () => {
+    window.scrollTo(0, 0);
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [username, setUsername] = React.useState('');

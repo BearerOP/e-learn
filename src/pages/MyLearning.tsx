@@ -10,6 +10,7 @@ import { fetchMyCourse } from "@/lib/api"
 import { useTabContext } from '@/contexts/tab-context' // Import the useTabContext hook
 
 export default function MyLearning() {
+  window.scrollTo(0, 0);
   const { activeTab, setActiveTab } = useTabContext() // Access context
   const [userCourses, setUserCourses] = useState<UserCourses | null>(null)
   const [loading, setLoading] = useState(true)

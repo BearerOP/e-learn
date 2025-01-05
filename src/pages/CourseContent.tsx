@@ -13,6 +13,7 @@ export default function CourseContent() {
   const [courseTitle, setCourseTitle] = useState<string>("")
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchCourseContent = async () => {
       try {
         const response = await getCourseContent(courseId)

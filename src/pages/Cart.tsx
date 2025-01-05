@@ -15,6 +15,7 @@ export default function CartContents() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchCartItems = async () => {
       const items = await getCartItems();
       setCartItems(items.data.cart);

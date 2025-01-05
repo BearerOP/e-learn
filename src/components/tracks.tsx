@@ -21,6 +21,7 @@ interface VideoContent {
 }
 
 export function CourseContentView() {
+
   const location = useLocation();
   const navigate = useNavigate();
   const videoContents: VideoContent[] = location.state?.videoContents || [];
@@ -43,6 +44,7 @@ export function CourseContentView() {
   const titleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (videoContents.length > 0) {
       setSelectedVideo(videoContents[0]);
     }
