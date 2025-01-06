@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { CourseCarousel } from "@/components/course-carousel";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { Course } from "@/types";
-import MinimalLoaderComponent from "@/components/ui/minimal-loader";
 import { useNavigate } from "react-router-dom";
 import { LazyMotion,domAnimation } from "motion/react";
 
@@ -65,14 +64,6 @@ export default function Dashboard() {
     toast.success("Course added to wishlist");
     // Add your wishlist logic here
   };
-
-  // if (loading) {
-  //   return (
-  //     <div className="flex h-[90vh] items-center justify-center bg-black">
-  //       <MinimalLoaderComponent />
-  //     </div>
-  //   );
-  // }
 
   // Function to get random courses
   const getRandomCourses = (count: number) => {
