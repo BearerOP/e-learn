@@ -33,7 +33,9 @@ export function CourseManagement({ courses, onUpdateCourse }: CourseManagementPr
           ease: "easeInOut",
         }} className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Courses</h1>
+        <h1 onClick={()=>{
+          navigate("/instructor/courses");
+        }} className="cursor-pointer text-3xl font-bold tracking-tight">My Courses</h1>
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <div className="flex gap-2">
             <div className="relative flex-1 md:w-[300px]">

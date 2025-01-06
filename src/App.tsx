@@ -16,6 +16,7 @@ import CreateCourse from './pages/CreateCourse';
 import { CourseContentView } from './components/tracks';
 import TrackContent from './pages/TrackContent';
 import { SignupForm } from './components/auth/SignupForm';
+import { NotFound } from './pages/NotFound';
 
 type Theme = "light" | "dark";
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="cart" element={<CartContents />} />
           <Route path="my-learning/course/:courseId" element={<CourseContent/>} />
           <Route path="my-learning/course/track/:trackId" element={<TrackContent/>} />
+          <Route path="*" element={<NotFound/>} />
         </Route>
       </Routes>
       <Toaster closeButton position="bottom-right" richColors theme={theme} />
