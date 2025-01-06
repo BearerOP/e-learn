@@ -20,12 +20,13 @@ export function NotFound() {
         <MorphingText
           className=""
           texts={[
-            "Page Not Found",
+            'Oopsie daisy!!',
+            "Page Not Found!",
             "Oops!!",
-            "Something went wrong",
+            "Something went wrong!",
             "Ohh No!!",
             "Page not reachable",
-            "This page can't be reached",
+            "This page can't be reached!",
           ]}
         />
       </motion.div>
