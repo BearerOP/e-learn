@@ -140,6 +140,14 @@ export const getTrackContent = (trackId: string) => {
     }
 }
 
+export const addTrackContent = (trackId: string, content: string) => {
+    try {
+        return api.post("/course/content/track/add", { trackId, content });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 export const createOrder = ({
     amount,
     currency,
