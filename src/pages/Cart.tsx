@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import CheckoutButton from "@/components/checkout";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import MinimalLoaderComponent from "@/components/ui/minimal-loader";
+import { CartSkeleton } from "@/components/skeletons";
 
 export default function CartContents() {
   const [cartItems, setCartItems] = useState<Course[]>([]);
@@ -62,7 +62,7 @@ export default function CartContents() {
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
       {loading ? (
-        <MinimalLoaderComponent />
+        <CartSkeleton/>
       ) : cartItems.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: -20 }}

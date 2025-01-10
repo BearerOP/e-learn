@@ -12,16 +12,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
+import { CategorySkeleton } from "./skeletons";
 
 interface CategoryCoursesProps {
   category: string;
   initialCourses: Course[];
   course: Course;
+  loading: boolean;
 }
 
 export default function CategoryCourses({
   category,
   initialCourses,
+  loading,
 }: CategoryCoursesProps) {
   const [courses, setCourses] = useState(initialCourses);
   const [searchTerm, setSearchTerm] = useState("");
@@ -88,31 +91,34 @@ export default function CategoryCourses({
         </Select>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.3,
-          ease: "easeInOut",
-        }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-      >
-        {sortedCourses.map((course) => (
-          <>
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.3,
-                ease: "easeInOut",
-              }}
-            >
-              <CourseCard key={course._id} course={course} />
-            </motion.div>
-          </>
-        ))}
-      </motion.div>
-
+      {loading ? (
+        <CategorySkeleton />
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          {sortedCourses.map((course) => (
+            <>
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut",
+                }}
+              >
+                <CourseCard key={course._id} course={course} />
+              </motion.div>
+            </>
+          ))}
+        </motion.div>
+      )}
       {sortedCourses.length === 0 && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
