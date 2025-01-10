@@ -91,6 +91,7 @@ export default function Dashboard() {
             onAddToCart: () => handleAddToCart(course._id),
             onAddToWishlist: () => handleAddToWishlist(course._id),
           }))}
+          loading={loading}
         />
         <CourseCarousel
           title="Top Rated Courses"
@@ -99,6 +100,7 @@ export default function Dashboard() {
             onAddToCart: () => handleAddToCart(course._id),
             onAddToWishlist: () => handleAddToWishlist(course._id),
           }))}
+          loading={loading}
         />
         <CourseCarousel
           title="All Courses"
@@ -107,6 +109,7 @@ export default function Dashboard() {
             onAddToCart: () => handleAddToCart(course._id),
             onAddToWishlist: () => handleAddToWishlist(course._id),
           }))}
+          loading={loading}
         />
       </div>
     </LazyMotion>
