@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchCoursesByCategory } from "@/lib/api";
 import CategoryCourses from "@/components/category-courses";
-import { CategorySkeleton } from "@/components/skeletons";
 import { toast } from "sonner";
 
 export default function CategoryPage() {
