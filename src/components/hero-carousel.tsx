@@ -73,17 +73,13 @@ export function HeroCarousel({ loading, items }: CourseCarouselProps) {
           <CardContent className="p-0">
             <div className="relative aspect-video">
               <LazyLoadImage
-                          src={items[currentIndex]?.thumbnail}
-                          alt={items[currentIndex]?.title}
-                          effect="blur"
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-              {/* <img
-                src={items[currentIndex].thumbnail}
-                alt={items[currentIndex].title}
-                loading="lazy"
-                className="object-cover h-full w-full"
-              /> */}
+                src={items[currentIndex]?.thumbnail}
+                alt={items[currentIndex]?.title}
+                width="100%"
+                height="100%"
+                effect="blur"
+                className="h-full w-full object-cover  transition-transform duration-300 group-hover:scale-105"
+              />
               <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end justify-bottom p-4 pb-6">
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                 <div className="w-full md:w-3/4 lg:w-1/2 relative">

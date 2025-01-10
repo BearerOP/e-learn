@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import { Heart, ShoppingCart, Star, StarHalf } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { Heart, ShoppingCart, Star, StarHalf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useNavigate } from 'react-router-dom';
-import { Course } from '@/types';
-import { addToCart } from '@/lib/api';
-import { toast } from 'sonner';
+import { useNavigate } from "react-router-dom";
+import { Course } from "@/types";
+import { addToCart } from "@/lib/api";
+import { toast } from "sonner";
 
 interface CourseCardProps {
   course: Course;
@@ -24,10 +24,10 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
       // Optional: Perform an action based on scroll position
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -38,21 +38,19 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         toast.error("Failed to add course to cart. Please try again.");
         return;
       }
-      toast.success(response.data.message, 
-        {
-          action: {
-            label: 'Go to Cart',
-            onClick: () => {
-              navigate('/cart');
-            },
-            actionButtonStyle: {
-              backgroundColor: '#2dd4bf',
-              color:'#0c3835',
-            },
+      toast.success(response.data.message, {
+        action: {
+          label: "Go to Cart",
+          onClick: () => {
+            navigate("/cart");
           },
-          duration: 5000,
-        }
-      );
+          actionButtonStyle: {
+            backgroundColor: "#2dd4bf",
+            color: "#0c3835",
+          },
+        },
+        duration: 5000,
+      });
     } catch (error) {
       console.error("Error adding course to cart:", error);
       toast.error(
@@ -62,7 +60,8 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
     }
   };
 
-  const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const formatNumber = (num: number) =>
+    num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const formatPrice = (price: number) => `₹${price}`;
 
   const renderRatingStars = (rating: number) => {
@@ -74,11 +73,17 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
     for (let i = 0; i < totalStars; i++) {
       if (i < fullStars) {
         stars.push(
-          <Star key={`star-${i}`} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+          <Star
+            key={`star-${i}`}
+            className="h-4 w-4 fill-yellow-400 text-yellow-400"
+          />
         );
       } else if (i === fullStars && hasHalfStar) {
         stars.push(
-          <StarHalf key="half-star" className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+          <StarHalf
+            key="half-star"
+            className="h-4 w-4 fill-yellow-400 text-yellow-400"
+          />
         );
       } else {
         stars.push(
@@ -96,6 +101,8 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           <LazyLoadImage
             alt={course?.title}
             src={course?.thumbnail}
+            width="100%"
+            height="100%"
             effect="blur"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
@@ -125,11 +132,15 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         >
           <div className="space-y-3">
             <h3 className="line-clamp-2 font-bold">{course?.title}</h3>
-            <p className="text-sm text-muted-foreground">{course?.createdBy?.username}</p>
+            <p className="text-sm text-muted-foreground">
+              {course?.createdBy?.username}
+            </p>
             <div className="flex items-center gap-2">
               {course?.averageRating > 0 ? (
                 <>
-                  <span className="font-bold">{course?.averageRating.toFixed(1)}</span>
+                  <span className="font-bold">
+                    {course?.averageRating.toFixed(1)}
+                  </span>
                   <div className="flex items-center">
                     {renderRatingStars(course?.averageRating)}
                   </div>
@@ -139,8 +150,12 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
                 </>
               ) : (
                 <>
-                  <div className="flex items-center">{renderRatingStars(0)}</div>
-                  <span className="text-sm text-muted-foreground">Not rated yet</span>
+                  <div className="flex items-center">
+                    {renderRatingStars(0)}
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    Not rated yet
+                  </span>
                 </>
               )}
             </div>
