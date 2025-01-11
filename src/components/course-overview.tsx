@@ -1,21 +1,26 @@
 'use client'
 
 import { Clock, Globe, Play, Star } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { fetchCourse } from '@/lib/api'
+import { addToCart, fetchCourse } from '@/lib/api'
 import { useEffect, useState } from 'react'
 import { Course } from '@/types'
+import MinimalLoaderComponent from './ui/minimal-loader'
+import { toast } from 'sonner'
 
 export default function CourseOverview() {
   const { courseId } = useParams<{ courseId: string }>()
   const [loading, setLoading] = useState(true)
   const [course, setCourse] = useState<Course>()
+  const navigate = useNavigate();
 
   useEffect(() => {
+
+
     window.scrollTo(0, 0) // Scroll to top of the page on component mount
     const loadCourse = async () => {
       try {
@@ -38,8 +43,41 @@ export default function CourseOverview() {
     loadCourse()
   }, [courseId])
 
+
+  const handleAddToCart = async (courseId: string) => {
+    try {
+      const response = await addToCart(courseId);
+      if (!response) {
+        toast.error("Failed to add course to cart. Please try again.");
+        return;
+      }
+      toast.success(response.data.message, {
+        action: {
+          label: "Go to Cart",
+          onClick: () => {
+            navigate("/cart");
+          },
+          actionButtonStyle: {
+            backgroundColor: "#2dd4bf",
+            color: "#0c3835",
+          },
+        },
+        duration: 5000,
+      });
+    } catch (error) {
+      console.error("Error adding course to cart:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to add course to cart. Please try again."
+      );
+    }
+  };
+
   if (loading) {
-    return <div>Loading...</div>
+    return(
+    <>
+    <MinimalLoaderComponent />
+    </>)
   }
 
   return (
@@ -160,7 +198,7 @@ export default function CourseOverview() {
                       left at this price!
                     </div>
                     <div className="flex gap-2">
-                      <Button  className="flex-1">Add to cart</Button>
+                      <Button onClick={() => handleAddToCart(course._id)} className="flex-1">Add to cart</Button>
                       <Button variant="outline" size="icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
