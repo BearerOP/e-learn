@@ -25,7 +25,6 @@ export function CourseTracksManagement({ course, onUpdateCourse }: CourseTracksM
     content: '',
     videoUrl: '',
   })
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setNewTrack(prev => ({ ...prev, [name]: value }))
@@ -36,6 +35,7 @@ export function CourseTracksManagement({ course, onUpdateCourse }: CourseTracksM
   }
 
   const handleAddTrack = () => {
+    console.log(isAddingTrack,'isAddingTrack');
     const updatedTracks = [
       ...tracks, 
       { ...newTrack, _id: Date.now().toString(), subTracks: [] }

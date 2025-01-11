@@ -20,6 +20,7 @@ export function CreateCourseForm() {
     const [newTag, setNewTag] = useState<string>("");
     const [files, setFiles] = useState<File[]>([]);
 
+    console.log(files);
     const handleFileUpload = (files: File[]) => {
         setFiles(files);
         console.log(files);

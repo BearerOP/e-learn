@@ -56,6 +56,8 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch user details on mount if auth token exists
+console.log(loading);
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       const authToken = getAuthToken();

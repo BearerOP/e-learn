@@ -18,7 +18,6 @@ export function CourseGrid({
   loading, 
   category,
   onAddToCart = () => {},
-  onCheckout = () => {},
   onUnarchive = () => {}
 }: CourseGridProps) {
   if (loading) {

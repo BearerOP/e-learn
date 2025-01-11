@@ -16,7 +16,7 @@ export default function Profile() {
   window.scrollTo(0, 0);
   const navigate = useNavigate();
   const { logout, user } = useAuth();
-  const [logoutLoading, setLogoutLoading] = useState(false);
+  const [logoutLoading] = useState(false);
 
   const handleLogout = async () => {
     const authToken = getAuthToken();

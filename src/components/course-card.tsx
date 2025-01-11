@@ -20,8 +20,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   // Track the scroll position
   useEffect(() => {
     const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-      // Optional: Perform an action based on scroll position
+      setScrollPosition(scrollPosition);
     };
 
     window.addEventListener("scroll", handleScroll);
