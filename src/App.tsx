@@ -17,18 +17,19 @@ import { CourseContentView } from './components/tracks';
 import TrackContent from './pages/TrackContent';
 import { SignupForm } from './components/auth/SignupForm';
 import { NotFound } from './pages/NotFound';
-
-type Theme = "light" | "dark";
+import { useTheme } from 'next-themes';
 
 function App() {
-  const theme: Theme = localStorage.getItem("theme") as Theme;
-  
+
+  const { theme } = useTheme();
+
   return (
     <Router>
       <Routes>
         <Route path="/instructor" element={<InstructorDashboardLayout />}>
           <Route index element={<InstructorDashboard />} />
           <Route path="courses" element={<CourseManagement />} />
+          <Route path="course/:courseId" element={<CourseManagement />} />
           <Route path="create-course" element={<CreateCourse />} />
         </Route>
 
@@ -48,7 +49,7 @@ function App() {
           <Route path="*" element={<NotFound/>} />
         </Route>
       </Routes>
-      <Toaster closeButton position="bottom-right" richColors theme={theme} />
+      <Toaster closeButton position="bottom-right" richColors theme={theme as "light" | "dark"} />
     </Router>
   );
 }
