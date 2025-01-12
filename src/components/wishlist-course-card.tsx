@@ -13,13 +13,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useCart } from '@/contexts/cart-context'
 
 interface WishlistCourseCardProps {
   course: Course
-  onAddToCart: (courseId: string) => void
 }
 
-export function WishlistCourseCard({ course, onAddToCart }: WishlistCourseCardProps) {
+export function WishlistCourseCard({ course }: WishlistCourseCardProps) {
+  const { handleAddToCart } = useCart()
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0">
@@ -43,7 +44,7 @@ export function WishlistCourseCard({ course, onAddToCart }: WishlistCourseCardPr
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onAddToCart(course._id)}>
+                <DropdownMenuItem onClick={() => handleAddToCart(course._id)}>
                   Move to cart
                 </DropdownMenuItem>
                 <DropdownMenuItem>Remove from wishlist</DropdownMenuItem>
@@ -58,7 +59,7 @@ export function WishlistCourseCard({ course, onAddToCart }: WishlistCourseCardPr
         <p className="font-bold">${course.price.toFixed(2)}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full" onClick={() => onAddToCart(course._id)}>
+        <Button className="w-full" onClick={() => handleAddToCart(course._id)}>
           <ShoppingCart className="w-4 h-4 mr-2" />
           Add to Cart
         </Button>

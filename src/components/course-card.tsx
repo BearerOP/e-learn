@@ -6,58 +6,39 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { Course } from "@/types";
-import { addToCart } from "@/lib/api";
-import { toast } from "sonner";
-
+import { useCart } from "@/contexts/cart-context";
 interface CourseCardProps {
   course: Course;
 }
 
 export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   const navigate = useNavigate();
+  const { handleAddToCart } = useCart(); // Access `addToCart` from CartContext
+
+
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  // Track the scroll position
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(scrollPosition);
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  const handleAddToCart = async (courseId: string) => {
-    try {
-      const response = await addToCart(courseId);
-      if (!response) {
-        toast.error("Failed to add course to cart. Please try again.");
-        return;
-      }
-      toast.success(response.data.message, {
-        action: {
-          label: "Go to Cart",
-          onClick: () => {
-            navigate("/cart");
-          },
-          actionButtonStyle: {
-            backgroundColor: "#2dd4bf",
-            color: "#0c3835",
-          },
-        },
-        duration: 5000,
-      });
-    } catch (error) {
-      console.error("Error adding course to cart:", error);
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to add course to cart. Please try again."
-      );
-    }
-  };
+  // const handleAddToCart = () => {
+  //   addToCart(course); // Add the course to the cart context
+  //   toast.success(`${course.title} added to cart`, {
+  //     action: {
+  //       label: "Go to Cart",
+  //       onClick: () => navigate("/cart"),
+  //     },
+  //     duration: 5000,
+  //   });
+  // };
 
   const formatNumber = (num: number) =>
     num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -107,7 +88,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
           />
           <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <Button
-              onClick={() => handleAddToCart(course?._id)}
+              onClick={() => handleAddToCart(course._id)}
               variant="secondary"
               size="sm"
               className="flex items-center gap-2"

@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
+import { useTheme } from 'next-themes';
 import { LoginForm } from '@/components/auth/LoginForm';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
@@ -17,14 +18,12 @@ import { CourseContentView } from './components/tracks';
 import TrackContent from './pages/TrackContent';
 import { SignupForm } from './components/auth/SignupForm';
 import { NotFound } from './pages/NotFound';
-import { useTheme } from 'next-themes';
 
 function App() {
-
   const { theme } = useTheme();
 
   return (
-    <Router>
+    <>
       <Routes>
         <Route path="/instructor" element={<InstructorDashboardLayout />}>
           <Route index element={<InstructorDashboard />} />
@@ -34,7 +33,7 @@ function App() {
         </Route>
 
         <Route path="/" element={<RootLayout />} >
-        <Route path="/course/player" element={<CourseContentView />}/>
+          <Route path="/course/player" element={<CourseContentView />}/>
           <Route index element={<Dashboard />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<SignupForm />} />
@@ -50,15 +49,8 @@ function App() {
         </Route>
       </Routes>
       <Toaster closeButton position="bottom-right" richColors theme={theme as "light" | "dark"} />
-    </Router>
+    </>
   );
 }
 
 export default App;
-
-
-{/* <Route path="/course/player" element={<>
-
-<video poster="https://i.ytimg.com/vi/gBMQisvWCLY/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDeUNbsXn8E_g0fhwTr2HLZD_Vn2Q" controls autoPlay src="
-https://firebasestorage.googleapis.com/v0/b/theslugproject.appspot.com/o/gyansagar-courses%2Fweek1%2FJs-Basics.mov?alt=media&token=8814c902-161b-4397-9c17-b3361aeebd19"></video>
-</>} /> */}

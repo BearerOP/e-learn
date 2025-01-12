@@ -1,83 +1,83 @@
-'use client'
+"use client";
 
-import { Clock, Globe, Play, Star } from 'lucide-react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { addToCart, fetchCourse } from '@/lib/api'
-import { useEffect, useState } from 'react'
-import { Course } from '@/types'
-import MinimalLoaderComponent from './ui/minimal-loader'
-import { toast } from 'sonner'
+import { Clock, Globe, Play, Star } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { fetchCourse } from "@/lib/api";
+import { useEffect, useState } from "react";
+import { Course } from "@/types";
+import MinimalLoaderComponent from "./ui/minimal-loader";
+import { useCart } from "@/contexts/cart-context";
 
 export default function CourseOverview() {
-  const { courseId } = useParams<{ courseId: string }>()
-  const [loading, setLoading] = useState(true)
-  const [course, setCourse] = useState<Course>()
-  const navigate = useNavigate();
+  const { courseId } = useParams<{ courseId: string }>();
+  const [loading, setLoading] = useState(true);
+  const [course, setCourse] = useState<Course>();
+  const { handleAddToCart } = useCart(); // Access `addToCart` from CartContext
 
   useEffect(() => {
-
-
-    window.scrollTo(0, 0) // Scroll to top of the page on component mount
+    window.scrollTo(0, 0); // Scroll to top of the page on component mount
     const loadCourse = async () => {
       try {
-        console.log('Fetching course:', courseId);
+        console.log("Fetching course:", courseId);
 
-        const response = await fetchCourse(courseId)
+        const response = await fetchCourse(courseId);
         if (response.data.success) {
-          setCourse(response.data.data)
+          setCourse(response.data.data);
         } else {
-          console.error('Failed to fetch courses:', response.data.message)
+          console.error("Failed to fetch courses:", response.data.message);
         }
-        console.log('Course:', course);
+        console.log("Course:", course);
 
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching courses:', error)
-        setLoading(false)
+        console.error("Error fetching courses:", error);
+        setLoading(false);
       }
-    }
-    loadCourse()
-  }, [courseId])
+    };
+    loadCourse();
+  }, [courseId]);
 
-
-  const handleAddToCart = async (courseId: string) => {
-    try {
-      const response = await addToCart(courseId);
-      if (!response) {
-        toast.error("Failed to add course to cart. Please try again.");
-        return;
-      }
-      toast.success(response.data.message, {
-        action: {
-          label: "Go to Cart",
-          onClick: () => {
-            navigate("/cart");
-          },
-          actionButtonStyle: {
-            backgroundColor: "#2dd4bf",
-            color: "#0c3835",
-          },
-        },
-        duration: 5000,
-      });
-    } catch (error) {
-      console.error("Error adding course to cart:", error);
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to add course to cart. Please try again."
-      );
-    }
-  };
+  // const handleAddToCart = async (courseId: string) => {
+  //   try {
+  //     const response = await addToCart(courseId);
+  //     if (!response) {
+  //       toast.error("Failed to add course to cart. Please try again.");
+  //       return;
+  //     }
+  //     toast.success(response.data.message, {
+  //       action: {
+  //         label: "Go to Cart",
+  //         onClick: () => {
+  //           navigate("/cart");
+  //         },
+  //         actionButtonStyle: {
+  //           backgroundColor: "#2dd4bf",
+  //           color: "#0c3835",
+  //         },
+  //       },
+  //       duration: 5000,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error adding course to cart:", error);
+  //     toast.error(
+  //       error.response?.data?.message ||
+  //         "Failed to add course to cart. Please try again."
+  //     );
+  //   }
+  // };
 
   if (loading) {
-    return(
-    <>
-    <MinimalLoaderComponent />
-    </>)
+    return (
+      <>
+        <div className="min-h-[80vh] bg-background  flex justify-center items-center mx-auto px-4">
+          <MinimalLoaderComponent />
+        </div>
+      </>
+    );
   }
 
   return (
@@ -88,14 +88,19 @@ export default function CourseOverview() {
           <div className="md:col-span-2 space-y-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">{course.title}</h1>
-              <p className="text-xl text-muted-foreground">{course.description}</p>
+              <p className="text-xl text-muted-foreground">
+                {course.description}
+              </p>
             </div>
 
             <div className="flex items-center gap-4 text-sm">
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-primary text-primary" />
                 <span className="font-medium">{course.averageRating}</span>
-                <Link to="#reviews" className="text-muted-foreground hover:text-primary">
+                <Link
+                  to="#reviews"
+                  className="text-muted-foreground hover:text-primary"
+                >
                   ({course.reviews.length} ratings)
                 </Link>
               </div>
@@ -158,7 +163,10 @@ export default function CourseOverview() {
                   >
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
-                  <span>Learn how to request data from a server, limit and sort the responses, aggregate data from multiple tables</span>
+                  <span>
+                    Learn how to request data from a server, limit and sort the
+                    responses, aggregate data from multiple tables
+                  </span>
                 </li>
               </ul>
             </div>
@@ -187,10 +195,14 @@ export default function CourseOverview() {
                   </TabsList>
                   <TabsContent value="personal" className="space-y-4">
                     <div className="flex items-center gap-2">
-                      <div className="text-sm">This Premium course is included in plans</div>
+                      <div className="text-sm">
+                        This Premium course is included in plans
+                      </div>
                     </div>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-bold">₹{course.price}</span>
+                      <span className="text-2xl font-bold">
+                        ₹{course.price}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-red-600">
                       <Clock className="h-4 w-4" />
@@ -198,7 +210,12 @@ export default function CourseOverview() {
                       left at this price!
                     </div>
                     <div className="flex gap-2">
-                      <Button onClick={() => handleAddToCart(course._id)} className="flex-1">Add to cart</Button>
+                      <Button
+                        onClick={() => handleAddToCart(course._id)}
+                        className="flex-1"
+                      >
+                        Add to cart
+                      </Button>
                       <Button variant="outline" size="icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -244,5 +261,5 @@ export default function CourseOverview() {
         </div>
       </div>
     </div>
-  )
+  );
 }

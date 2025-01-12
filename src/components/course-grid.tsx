@@ -17,7 +17,6 @@ export function CourseGrid({
   courses, 
   loading, 
   category,
-  onAddToCart = () => {},
   onUnarchive = () => {}
 }: CourseGridProps) {
   if (loading) {
@@ -54,7 +53,7 @@ export function CourseGrid({
           case 'purchased':
             return <LearningCourseCard progress={0} key={course._id} course={course} />
           case 'wishlist':
-            return <WishlistCourseCard key={course._id} course={course} onAddToCart={onAddToCart} />
+            return <WishlistCourseCard key={course._id} course={course}/>
           case 'archived':
             return <ArchivedCourseCard key={course._id} course={course} onUnarchive={onUnarchive} />
           default:

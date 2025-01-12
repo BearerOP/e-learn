@@ -5,51 +5,24 @@ import { Course } from "@/types/index";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
-import { getCartItems, removeFromCart } from "@/lib/api";
 import { toast } from "sonner";
 import CheckoutButton from "@/components/checkout";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CartSkeleton } from "@/components/skeletons";
+import { useCart } from "@/contexts/cart-context";
 
 export default function CartContents() {
   const [cartItems, setCartItems] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const { handleRemoveFromCart, cart } = useCart();
 
   useEffect(() => {
+    setCartItems(cart);
+    setLoading(false);
     window.scrollTo(0, 0);
-    const fetchCartItems = async () => {
-      try {
-        const items = await getCartItems();
-        setCartItems(items.data.cart);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-        toast.error("Failed to fetch cart items. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCartItems();
-  }, []);
-
-  const handleRemoveItem = async (courseId: string) => {
-    try {
-      const response = await removeFromCart(courseId);
-      if (!response) {
-        toast.error("Failed to remove course from cart. Please try again.");
-        return;
-      }
-      setCartItems(cartItems.filter((item) => item._id !== courseId));
-      toast.success(response?.data?.message);
-    } catch (error) {
-      console.error("Error removing course from cart:", error);
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to remove course from cart. Please try again."
-      );
-    }
-  };
+  }, [cart]);
 
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
@@ -62,7 +35,7 @@ export default function CartContents() {
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
       {loading ? (
-        <CartSkeleton/>
+        <CartSkeleton />
       ) : cartItems.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -117,7 +90,7 @@ export default function CartContents() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleRemoveItem(item._id)}
+                        onClick={() => handleRemoveFromCart(item._id)}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -128,14 +101,13 @@ export default function CartContents() {
             ))}
           </div>
           <motion.div
-            
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.3,
               ease: "easeInOut",
             }}
-            >
+          >
             <Card>
               <CardContent onClick={onCheckout} className="p-4">
                 <h2 className="text-xl font-semibold mb-4">Total:</h2>
@@ -155,3 +127,21 @@ export default function CartContents() {
     </div>
   );
 }
+
+// const handleRemoveItem = async (courseId: string) => {
+//   try {
+//     const response = await removeFromCart(courseId);
+//     if (!response) {
+//       toast.error("Failed to remove course from cart. Please try again.");
+//       return;
+//     }
+//     setCartItems(cartItems.filter((item) => item._id !== courseId));
+//     toast.success(response?.data?.message);
+//   } catch (error) {
+//     console.error("Error removing course from cart:", error);
+//     toast.error(
+//       error.response?.data?.message ||
+//         "Failed to remove course from cart. Please try again."
+//     );
+//   }
+// };
