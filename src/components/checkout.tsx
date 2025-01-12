@@ -1,9 +1,12 @@
-import { useState} from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import favicon from "../../favicon.svg";
 import { useAuth } from "@/contexts/auth-context";
 import { Course, PaymentDetails } from "@/types";
-import { createOrder as createOrderApi, purchaseCourse as purchaseCourseApi } from "@/lib/api";
+import {
+  createOrder as createOrderApi,
+  purchaseCourse as purchaseCourseApi,
+} from "@/lib/api";
 import Razorpay from "react-razorpay/dist/razorpay";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -64,29 +67,26 @@ export default function CheckoutButton({
         description: `Purchase of ${orderItems.length} course(s)`,
         image: favicon,
         order_id: orderData.orderId,
-        handler: async(response: {
+        handler: async (response: {
           razorpay_payment_id: string;
           razorpay_order_id: string;
           razorpay_signature: string;
         }) => {
           console.log("Payment successful:", response);
 
-        try {
-          const purchasel = await purchaseCourseApi(orderItems);
+          try {
+            const purchasel = await purchaseCourseApi(orderItems);
 
-          console.log("Purchase response:", purchasel.data);
-          
-          navigate("/my-learning");
-        } catch (error) {
-          console.error("Error updating user courses:", error);
-          toast.error(
-            error.response.message || "An error occurred while updating user courses."
-          );
-          
-        }
+            console.log("Purchase response:", purchasel.data);
 
-        
-
+            navigate("/my-learning");
+          } catch (error) {
+            console.error("Error updating user courses:", error);
+            toast.error(
+              error.response.message ||
+                "An error occurred while updating user courses."
+            );
+          }
 
           toast.success(
             `Payment successful! \n

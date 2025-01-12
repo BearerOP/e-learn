@@ -28,18 +28,6 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  // const handleAddToCart = () => {
-  //   addToCart(course); // Add the course to the cart context
-  //   toast.success(`${course.title} added to cart`, {
-  //     action: {
-  //       label: "Go to Cart",
-  //       onClick: () => navigate("/cart"),
-  //     },
-  //     duration: 5000,
-  //   });
-  // };
-
   const formatNumber = (num: number) =>
     num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const formatPrice = (price: number) => `₹${price}`;

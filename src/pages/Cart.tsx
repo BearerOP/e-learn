@@ -34,9 +34,8 @@ export default function CartContents() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
-      {loading ? (
-        <CartSkeleton />
-      ) : cartItems.length === 0 ? (
+      {loading && <CartSkeleton />}
+      {cartItems.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -109,16 +108,18 @@ export default function CartContents() {
             }}
           >
             <Card>
-              <CardContent onClick={onCheckout} className="p-4">
+              <CardContent className="p-4">
                 <h2 className="text-xl font-semibold mb-4">Total:</h2>
                 <p className="text-3xl font-bold mb-6">
                   ₹{totalPrice.toFixed(2)}
                 </p>
-                <CheckoutButton
-                  orderItems={cartItems}
-                  totalAmount={parseInt(totalPrice.toFixed(2))}
-                  currency="INR"
-                />
+                <div className="w-fit" onClick={onCheckout}>
+                  <CheckoutButton
+                    orderItems={cartItems}
+                    totalAmount={parseInt(totalPrice.toFixed(2))}
+                    currency="INR"
+                  />
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -127,21 +128,3 @@ export default function CartContents() {
     </div>
   );
 }
-
-// const handleRemoveItem = async (courseId: string) => {
-//   try {
-//     const response = await removeFromCart(courseId);
-//     if (!response) {
-//       toast.error("Failed to remove course from cart. Please try again.");
-//       return;
-//     }
-//     setCartItems(cartItems.filter((item) => item._id !== courseId));
-//     toast.success(response?.data?.message);
-//   } catch (error) {
-//     console.error("Error removing course from cart:", error);
-//     toast.error(
-//       error.response?.data?.message ||
-//         "Failed to remove course from cart. Please try again."
-//     );
-//   }
-// };

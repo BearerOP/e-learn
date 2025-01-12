@@ -3,6 +3,7 @@ import { Course } from "@/types";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "./auth-context";
 
 interface CartContextType {
   cart: Course[];
@@ -20,6 +21,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cart, setCart] = useState<Course[]>([]);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // Fetch Cart Items
   const fetchCart = async () => {
@@ -36,16 +38,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Add to Cart
   const handleAddToCart = async (courseId: string) => {
+    const alreadyPurchased = user.purchasedCourses.some(
+      (item) => item === courseId
+    );
+    if (alreadyPurchased) {
+      toast.error("You have already purchased this course.");
+      return;
+    }
     // Check if the course is already in the cart
     const isCourseInCart = cart.some((item) => item._id === courseId);
     if (isCourseInCart) {
       toast.error("Course is already in the cart.");
       return;
     }
+
+    // Optimistically update the cart UI
+    const newCart = [...cart, { _id: courseId } as Course];
+    setCart(newCart);
+
     try {
       const response = await addToCart(courseId);
       if (!response) {
         toast.error("Failed to add course to cart. Please try again.");
+        // Revert the cart state if the backend call fails
+        setCart(cart);
         return;
       }
       toast.success(response.data.message, {
@@ -70,6 +86,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         error.response?.data?.message ||
           "Failed to add course to cart. Please try again."
       );
+      // Revert the cart state if the backend call fails
+      setCart(cart);
     }
   };
 
@@ -80,48 +98,34 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     setCart(updatedCart);
 
     // Show toast with undo option
-    toast.success("Course removed from cart.", {
-      action: {
-        label: "Undo",
-        onClick: () => {
-          // Revert the cart state if undo is clicked
-          setCart(cart);
-        },
-        actionButtonStyle: {
-          backgroundColor: "#2dd4bf",
-          color: "#0c3835",
-        },
-      },
-      duration: 5000,
-      onDismiss: async () => {
-        // If the toast is dismissed without undo, make the backend call
-        if (cart.length !== updatedCart.length) {
-          try {
-            const response = await removeFromCart(courseId);
-            console.log("backend called");
-
-            if (!response) {
-              toast.error(
-                "Failed to remove course from cart. Please try again."
-              );
-              // Revert the cart state if the backend call fails
-              setCart(cart);
-              return;
-            }
-            toast.success(response.data.message);
-            // Refresh cart items after removal
-            fetchCart();
-          } catch (error) {
-            console.error("Error removing course from cart:", error);
-            toast.error(
-              error.response?.data?.message ||
-                "Failed to remove course from cart. Please try again."
-            );
-            // Revert the cart state if the backend call fails
-            setCart(cart);
+    new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(async () => {
+        try {
+          const response = await removeFromCart(courseId);
+          if (!response) {
+            throw new Error("Failed to remove course from cart.");
           }
+          resolve();
+        } catch (error) {
+          reject(error);
         }
-      },
+      }, 5000);
+
+      toast.success("Course removed from cart.", {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            clearTimeout(timeout);
+            setCart(cart);
+            resolve();
+          },
+          actionButtonStyle: {
+            backgroundColor: "#2dd4bf",
+            color: "#0c3835",
+          },
+        },
+        duration: 4000,
+      });
     });
   };
 
