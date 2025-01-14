@@ -21,7 +21,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cart, setCart] = useState<Course[]>([]);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   // Fetch Cart Items
   const fetchCart = async () => {
@@ -38,6 +38,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Add to Cart
   const handleAddToCart = async (courseId: string) => {
+    // Check if the user is logged in
+
+    if (!isAuthenticated) {
+      toast.success("You need to login before adding to cart", {
+        action: {
+          label: "Login",
+          onClick: () => {
+            navigate("/login");
+          },
+          actionButtonStyle: {
+            backgroundColor: "#2dd4bf",
+            color: "#0c3835",
+          },
+        },
+        duration: 5000,
+      });
+      return;
+    }
+
     const alreadyPurchased = user.purchasedCourses.some(
       (item) => item === courseId
     );
