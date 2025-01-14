@@ -41,7 +41,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     // Check if the user is logged in
 
     if (!isAuthenticated) {
-      toast.success("You need to login before adding to cart", {
+      toast.warning("You need to login before adding to cart", {
         action: {
           label: "Login",
           onClick: () => {

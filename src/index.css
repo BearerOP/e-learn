@@ -97,3 +97,16 @@ button {
   }
 }
 
+@import 'nprogress/nprogress.css';
+/* Progress bar line */
+body.dark #nprogress .bar {
+  background: rgb(33, 253, 212); /* Change color */
+  height: 1.5px;      /* Change thickness */
+  z-index: 1031;    /* Adjust stacking order */
+}
+
+#nprogress .bar  {
+  background: rgb(3, 62, 52); /* Change color */
+  height: 3px;      /* Change thickness */
+  z-index: 1031;    /* Adjust stacking order */
+}
