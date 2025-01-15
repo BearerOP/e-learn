@@ -21,6 +21,7 @@ import { NotFound } from "./pages/NotFound";
 import NProgress from "nprogress";
 import { useEffect } from "react";
 import "nprogress/nprogress.css";
+import GridPattern from "./components/grid-pattern";
 function App() {
   const { theme } = useTheme();
 
@@ -34,7 +35,6 @@ function App() {
           <Route path="course/:courseId" element={<CourseManagement />} />
           <Route path="create-course" element={<CreateCourse />} />
         </Route>
-
         <Route path="/" element={<RootLayout />}>
           <Route path="/course/player" element={<CourseContentView />} />
           <Route index element={<Dashboard />} />
@@ -59,6 +59,14 @@ function App() {
           />
           <Route path="*" element={<NotFound />} />
         </Route>
+        <Route
+          path="grid"
+          element={
+            <div className="bg-[#010807] h-screen w-screen">
+              <GridPattern />
+            </div>
+          }
+        />
       </Routes>
       <Toaster
         closeButton
