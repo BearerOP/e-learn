@@ -132,7 +132,8 @@ export default function GridPattern() {
   return (
     <motion.div className="relative isolate flex w-full flex-col z-10">
       <Pattern
-        className="absolute inset-x-0 -top-14 h-[900px] w-full fill-custom-green-text/10 stroke-custom-green-text/10 [mask-image:radial-gradient(circle_at_top_right,white_30%,transparent_65%)]"
+        className="absolute inset-x-0 -top-14 h-[900px] w-full dark:fill-custom-green-text/10 fill-custom-green-text/30
+         stroke-custom-green-bg/30 dark:stroke-custom-green-text/10 [mask-image:radial-gradient(circle_at_top_right,white_30%,transparent_65%)]"
         yOffset={-96}
         interactive
       />

@@ -58,15 +58,15 @@ function App() {
             element={<TrackContent />}
           />
           <Route path="*" element={<NotFound />} />
-        </Route>
         <Route
           path="grid"
           element={
-            <div className="bg-[#010807] h-screen w-screen">
+            <div className="dark:bg-[#010807] bg-[rgba(187,225,219,0.44)] h-[200vh] pt-12">
               <GridPattern />
             </div>
           }
-        />
+          />
+          </Route>
       </Routes>
       <Toaster
         closeButton
