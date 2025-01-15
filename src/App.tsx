@@ -64,10 +64,6 @@ function App() {
           element={
             <div className="bg-[#010807] h-screen w-screen">
               <GridPattern />
-              {/* <AnimatedBlockStroke 
-              width={100}
-              height={100} // Add the height property
-              /> */}
             </div>
           }
         />
@@ -101,42 +97,3 @@ const RouteChangeHandler = () => {
 };
 
 export default App;
-
-import React from "react";
-import { motion } from "framer-motion";
-
-export const AnimatedBlockStroke = React.memo(
-  ({ width, height, className }: { width: number; height: number; className?: string }) => {
-    const animationProps = {
-      initial: { strokeDasharray: 1000, strokeDashoffset: 1000 },
-      animate: { strokeDashoffset: 0 },
-      transition: { duration: 2, ease: "easeInOut", repeat: Infinity },
-    };
-
-    return (
-      <div className={`relative ${className}`}>
-        <svg
-          width={width}
-          height={height}
-          viewBox={`0 0 ${width} ${height}`}
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <motion.rect
-            x="5"
-            y="5"
-            width={width - 10}
-            height={height - 10}
-            rx="10" // Rounded corners (adjust as needed)
-            ry="10"
-            stroke="rgba(255, 255, 255, 0.8)" // Customize stroke color
-            strokeWidth="2"
-            fill="none"
-            {...animationProps}
-          />
-        </svg>
-      </div>
-    );
-  }
-);
-
-AnimatedBlockStroke.displayName = "AnimatedBlockStroke";
