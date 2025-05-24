@@ -60,7 +60,7 @@ export default function CheckoutButton({
       }
 
       const options = {
-        key: "rzp_test_OMA3LMhs4XVZMr",
+        key: "rzp_test_UFqvqMvAS64vKp",
         amount: orderData.amount * 100, // Convert to paise
         currency: orderData.currency,
         name: "Gyansagar",

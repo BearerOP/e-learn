@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Basic ${Buffer.from(
-            `rzp_test_OMA3LMhs4XVZMr:JQiMnnCCL3izUbNWSQPIL6a0`
+            `rzp_test_UFqvqMvAS64vKp:zZocMCEAf3XCoaBKcaHhiEvo`
           ).toString("base64")}`,
 },
       }

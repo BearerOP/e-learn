@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { getVideoUrl, isYoutubeUrl } from "@/utils/videoUtils"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronDown, ChevronUp, Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Maximize, Minimize, PictureInPicture2 } from 'lucide-react'
+import { ChevronLeft, ChevronDown, ChevronUp, Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Maximize, Minimize, Settings } from 'lucide-react'
 import MinimalLoaderComponent from "./ui/minimal-loader"
 import { Separator } from "./ui/separator"
 import { Slider } from "@/components/ui/slider"
@@ -42,6 +42,7 @@ export function CourseContentView() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const titleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -157,17 +158,32 @@ export function CourseContentView() {
   const handleMouseMove = () => {
     setShowControls(true);
     setShowTitle(true);
+    
     if (titleTimeoutRef.current) {
       clearTimeout(titleTimeoutRef.current);
     }
+    
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    
     titleTimeoutRef.current = setTimeout(() => {
       setShowTitle(false);
     }, 2000);
+    
+    controlsTimeoutRef.current = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
   };
 
   const handleMouseLeave = () => {
-    setShowControls(false);
-    setShowTitle(false);
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    controlsTimeoutRef.current = setTimeout(() => {
+      setShowControls(false);
+      setShowTitle(false);
+    }, 1000);
   };
 
   const formatTime = (time: number) => {
@@ -198,7 +214,7 @@ export function CourseContentView() {
       </CardHeader>
       <CardContent className={`${isFullScreen ? 'p-0 h-full' : 'max-w-4xl mx-auto'} space-y-4`}>
         <div 
-          className={`relative ${isFullScreen ? 'h-full' : 'aspect-video'}`}
+          className={`relative ${isFullScreen ? 'h-full' : 'aspect-video'} bg-black`}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
@@ -235,9 +251,9 @@ export function CourseContentView() {
               {showPlayPauseIcon && (
                 <div className="absolute inset-0 flex items-center justify-center z-20">
                   {isPlaying ? (
-                    <Pause size={48} fill={'#2dd4bf'} className="text-[#2dd4bf] opacity-75" />
+                    <Pause size={48} className="text-white opacity-75" />
                   ) : (
-                    <Play size={48}  fill={'#2dd4bf'} className="text-[#2dd4bf] opacity-75" />
+                    <Play size={48} className="text-white opacity-75" />
                   )}
                 </div>
               )}
@@ -246,36 +262,80 @@ export function CourseContentView() {
                   <h2 className="text-white text-xl font-bold">{selectedVideo.title}</h2>
                 </div>
               )}
-              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-                <div className="flex items-center justify-between text-white">
-                  <div className="flex items-center space-x-2">
-                    <Button variant="ghost" size="icon" onClick={handlePlayPause}>
-                      {isPlaying ? <Pause fill="white" size={24} /> : <Play fill="white" size={24} />}
+
+              {/* New Control Bar based on the screenshot */}
+              <div 
+                className={`absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}
+                style={{ height: '56px' }}
+              >
+                {/* Progress bar positioned at top of control bar */}
+                <div className="absolute -top-1 left-0 right-0 px-0">
+                  <Slider
+                    value={[currentTime]}
+                    max={duration}
+                    step={1}
+                    onValueChange={(value) => handleSeek(value[0])}
+                    className="h-1"
+                  />
+                </div>
+                
+                {/* Control buttons */}
+                <div className="flex items-center justify-between h-full px-4 text-white">
+                  <div className="flex items-center space-x-4">
+                    {/* Skip back button */}
+                    <Button variant="ghost" size="icon" className="hover:bg-transparent p-0" onClick={() => handleSeek(currentTime - 10)}>
+                      <div className="rounded-full bg-white bg-opacity-20 p-1">
+                        <SkipBack size={18} className="text-white" />
+                      </div>
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleSeek(currentTime - 10)}>
-                      <SkipBack fill="white" size={24} />
+                    
+                    {/* Play/Pause button */}
+                    <Button variant="ghost" size="icon" className="hover:bg-transparent p-0" onClick={handlePlayPause}>
+                      <div className="rounded-full bg-white bg-opacity-20 p-2">
+                        {isPlaying ? 
+                          <Pause size={22} className="text-white" /> : 
+                          <Play size={22} className="text-white ml-0.5" />
+                        }
+                      </div>
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleSeek(currentTime + 10)}>
-                      <SkipForward fill="white" size={24} />
+                    
+                    {/* Skip forward button */}
+                    <Button variant="ghost" size="icon" className="hover:bg-transparent p-0" onClick={() => handleSeek(currentTime + 10)}>
+                      <div className="rounded-full bg-white bg-opacity-20 p-1">
+                        <SkipForward size={18} className="text-white" />
+                      </div>
                     </Button>
+                    
+                    {/* Time display */}
+                    <div className="text-sm font-medium">
+                      {formatTime(currentTime)} / {formatTime(duration)}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-4">
+                    {/* Volume control */}
                     <div className="flex items-center space-x-2">
-                      <Button variant="ghost" size="icon" onClick={handleMuteToggle}>
-                        {isMuted ? <VolumeX fill="white" size={24} /> : <Volume2 fill="white" size={24} />}
+                      <Button variant="ghost" size="icon" className="hover:bg-transparent p-0" onClick={handleMuteToggle}>
+                        {isMuted ? 
+                          <VolumeX size={20} className="text-white" /> : 
+                          <Volume2 size={20} className="text-white" />
+                        }
                       </Button>
                       <Slider
                         value={[volume]}
                         max={1}
                         step={0.1}
                         onValueChange={(value) => handleVolumeChange(value[0])}
-                        className="w-24 bg-custom-green-bg"
+                        className="w-16"
                       />
                     </div>
-                    <span>{formatTime(currentTime)} / {formatTime(duration)}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
+                    
+                    {/* Playback speed */}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">{playbackSpeed}x</Button>
+                        <Button variant="ghost" size="sm" className="text-white h-8 px-2">
+                          {playbackSpeed}x
+                        </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         {[0.5, 1, 1.25, 1.5, 1.75, 2].map((speed) => (
@@ -285,11 +345,28 @@ export function CourseContentView() {
                         ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
+                    
+                    {/* Captions button */}
+                    <Button variant="ghost" size="icon" className="hover:bg-transparent p-0">
+                      <div className="rounded-sm border border-white border-opacity-50 px-2 py-0.5">
+                        <span className="text-xs text-white">CC</span>
+                      </div>
+                    </Button>
+                    
+                    {/* Settings button */}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">{quality}</Button>
+                        <Button variant="ghost" size="icon" className="hover:bg-transparent p-0">
+                          <Settings size={20} className="text-white" />
+                        </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
+                        <DropdownMenuItem onSelect={() => handlePictureInPicture()}>
+                          Picture in Picture
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          Quality: {quality}
+                        </DropdownMenuItem>
                         {['1080p', '720p', '480p'].map((q) => (
                           <DropdownMenuItem key={q} onSelect={() => setQuality(q)}>
                             {q}
@@ -297,26 +374,21 @@ export function CourseContentView() {
                         ))}
                       </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button variant="ghost" size="icon" onClick={handlePictureInPicture}>
-                      <PictureInPicture2 size={24} />
-                    </Button>
-                    <Button variant="ghost" size="icon" onClick={handleFullScreenToggle}>
-                      {isFullScreen ? <Minimize size={24} /> : <Maximize size={24} />}
+                    
+                    {/* Fullscreen button */}
+                    <Button variant="ghost" size="icon" className="hover:bg-transparent p-0" onClick={handleFullScreenToggle}>
+                      {isFullScreen ? 
+                        <Minimize size={20} className="text-white" /> : 
+                        <Maximize size={20} className="text-white" />
+                      }
                     </Button>
                   </div>
                 </div>
-                <Slider
-                  value={[currentTime]}
-                  max={duration}
-                  step={1}
-                  onValueChange={(value) => handleSeek(value[0])}
-                  className="mt-2"
-                />
               </div>
             </div>
           )}
         </div>
-        <div className={`prose max-w-none 'fixed bottom-0 left-0 right-0 bg-background p-4 shadow-lg'}`}>
+        <div className={`prose max-w-none ${isFullScreen ? 'hidden' : ''}`}>
             <Separator className='my-2' />
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-xl font-semibold">Description</h2>
