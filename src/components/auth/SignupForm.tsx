@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Github } from 'lucide-react';
+// import { Github } from 'lucide-react';
 import { register as apiSignup } from '@/lib/api';
 
 export const SignupForm: React.FC = () => {
@@ -62,16 +62,16 @@ export const SignupForm: React.FC = () => {
                 </Button>
             </form>
 
-            <div className="relative my-6">
+            {/* <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                     <span className="backdrop-blur-xl px-2 text-muted-foreground">Or continue with</span>
                 </div>
-            </div>
+            </div> */}
 
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
                 <Button variant="outline" className="w-full" onClick={() => { }}>
                     <Github className="mr-2 h-4 w-4" />
                     Github
@@ -97,7 +97,7 @@ export const SignupForm: React.FC = () => {
                     </svg>
                     Google
                 </Button>
-            </div>
+            </div> */}
         </div>
     );
 };
