@@ -169,3 +169,11 @@ export const purchaseCourse = (items: Course[]) => {
         console.error(err);
     }
 }
+
+export const getInstructorDashboardData = () => {
+    try {
+        return api.get(`/dashboard`);
+    } catch (err) {
+        console.error(err);
+    }
+}
