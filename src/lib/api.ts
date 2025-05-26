@@ -2,8 +2,8 @@ import axios from "axios";
 import { Course, CreateCourseData } from "../types";
 
 export const api = axios.create({
-    baseURL: "https://e-learn-backend-6qyz.onrender.com/api/v1",
-    // baseURL: "http://localhost:3000/api/v1",
+    // baseURL: "https://e-learn-backend-6qyz.onrender.com/api/v1",
+    baseURL: "http://localhost:3000/api/v1",
 });
 
 export const setAuthToken = (token: string) => {
@@ -115,11 +115,36 @@ export const createCourse = (formData: CreateCourseData) => {
     }
 }
 
-export const getInstructorCourses = () => {
+export const getInstructorCourses = async () => {
     try {
-        return api.get("/course/instructor");
+        console.log('Fetching instructor courses...');
+        const response = await api.get("/course/instructor");
+        console.log('API Response:', response);
+        
+        if (!response) {
+            throw new Error('No response received from the server');
+        }
+        
+        if (!response.data) {
+            throw new Error('No data in the response');
+        }
+        
+        if (!response.data.data) {
+            throw new Error('No courses data in the response');
+        }
+        
+        return response;
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching instructor courses:', err);
+        if (axios.isAxiosError(err)) {
+            console.error('Axios error details:', {
+                status: err.response?.status,
+                statusText: err.response?.statusText,
+                data: err.response?.data,
+                headers: err.response?.headers
+            });
+        }
+        throw err;
     }
 }
 
@@ -131,6 +156,13 @@ export const getCourseContent = (courseId: string) => {
     }
 }
 
+export const updateCourseStatus = (courseId: string, status: 'published' | 'draft') => {
+    try {
+        return api.put(`/course/status?courseId=${courseId}`, { status });
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 export const getTrackContent = (trackId: string) => {
     try {
