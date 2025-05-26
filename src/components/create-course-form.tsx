@@ -1,4 +1,3 @@
-
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -10,8 +9,9 @@ import { Badge } from "@/components/ui/badge"
 import { FileUpload } from "@/components/ui/file-upload"
 import { courseCategories, courseCategoryDisplayName, courseSubCategories, Tags as tags } from "@/types"
 import { toast } from "sonner"
-import { createCourse } from "@/lib/api"
+import { createCourse, getInstructorCourses } from "@/lib/api"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 
 export function CreateCourseForm() {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -19,6 +19,7 @@ export function CreateCourseForm() {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [newTag, setNewTag] = useState<string>("");
     const [files, setFiles] = useState<File[]>([]);
+    const navigate = useNavigate();
 
     console.log(files);
     const handleFileUpload = (files: File[]) => {
@@ -47,25 +48,36 @@ export function CreateCourseForm() {
 
     async function formSubmition(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        try {
-            const body = {
-                title: e.currentTarget.title.value,
-                description: e.currentTarget.description.value,
-                price: e.currentTarget.price.value,
-                category: selectedCategory!,
-                subCategory: selectedSubCategory!,
-                tags: selectedTags,
-                thumbnail: 'thumbnail.png',
-            };
-            const response = await createCourse(body);
-            if (response) {
-                toast.success(response.data.message);
-            } else {
-                toast.error('Failed to create course. Please try again.');
+        const body = {
+            title: e.currentTarget.title.value,
+            description: e.currentTarget.description.value,
+            price: e.currentTarget.price.value,
+            category: selectedCategory!,
+            subCategory: selectedSubCategory!,
+            tags: selectedTags,
+            thumbnail: 'thumbnail.png',
+        };
+
+        toast.promise(
+            createCourse(body).then(async response => {
+                if (response) {
+                    // Fetch updated courses list
+                    const coursesResponse = await getInstructorCourses();
+                    if (coursesResponse?.data?.data) {
+                        // Store courses in localStorage to be used by the courses page
+                        localStorage.setItem('instructorCourses', JSON.stringify(coursesResponse.data.data));
+                    }
+                    navigate("/instructor/courses");
+                    return response.data.message;
+                }
+                throw new Error('Failed to create course');
+            }),
+            {
+                loading: 'Creating your course...',
+                success: (message) => message,
+                error: (err) => err.message || 'Failed to create course. Please try again.'
             }
-        } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to create course. Please try again.');
-        }
+        );
     }
 
     return (

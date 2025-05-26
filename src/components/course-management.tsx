@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Search, PlusCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -8,6 +8,7 @@ import { CourseTracksManagement } from '@/components/tracks-management'
 import { Course } from '@/types'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { getInstructorCourses } from '@/lib/api'
 
 interface CourseManagementProps {
   setActiveView: (view: string) => void;
@@ -15,14 +16,37 @@ interface CourseManagementProps {
   onUpdateCourse: (updatedCourse: Course) => void
 }
 
-export function CourseManagement({ courses, onUpdateCourse }: CourseManagementProps) {
+export function CourseManagement({ courses: initialCourses, onUpdateCourse }: CourseManagementProps) {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
+  const [courses, setCourses] = useState<Course[]>(initialCourses)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // Check for stored courses in localStorage
+    const storedCourses = localStorage.getItem('instructorCourses');
+    if (storedCourses) {
+      setCourses(JSON.parse(storedCourses));
+      // Clear the stored courses after using them
+      localStorage.removeItem('instructorCourses');
+    } else {
+      // If no stored courses, fetch from API
+      const fetchCourses = async () => {
+        try {
+          const response = await getInstructorCourses();
+          if (response?.data?.data) {
+            setCourses(response.data.data);
+          }
+        } catch (error) {
+          console.error('Error fetching courses:', error);
+        }
+      };
+      fetchCourses();
+    }
+  }, []);
 
   const handleCourseClick = (course: Course) => {
     setSelectedCourse(course)
   }
-
-  const navigate = useNavigate()
 
   return (
     <motion.div
