@@ -60,7 +60,7 @@ export default function CheckoutButton({
       }
 
       const options = {
-        key: "rzp_test_UFqvqMvAS64vKp",
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderData.amount * 100, // Convert to paise
         currency: orderData.currency,
         name: "Gyansagar",

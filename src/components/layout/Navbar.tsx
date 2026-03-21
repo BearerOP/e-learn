@@ -325,13 +325,17 @@ const AvatarDropdown = ({ user, onLogout }) => {
             <span>Settings</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link to='/instructor'>
-            <GraduationCap className="mr-2 h-4 w-4" />
-            <span>Switch to Instructor</span>
-          </Link>
-        </DropdownMenuItem>
+        {user?.role === "both" && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/instructor">
+                <GraduationCap className="mr-2 h-4 w-4" />
+                <span>Instructor Dashboard</span>
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={onLogout}>
           <div className="flex items-center space-x-2">

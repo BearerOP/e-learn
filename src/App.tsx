@@ -5,6 +5,7 @@ import { LoginForm } from "@/components/auth/LoginForm";
 import Dashboard from "@/pages/Dashboard";
 import Profile from "@/pages/Profile";
 import { InstructorDashboardLayout } from "./components/layout/InstructorDashboardLayout";
+import { InstructorRouteGuard } from "./components/InstructorRouteGuard";
 import InstructorDashboard from "./pages/InstructorDashboard";
 import RootLayout from "./components/layout/RootLayout";
 import MyLearning from "./pages/MyLearning";
@@ -29,7 +30,14 @@ function App() {
     <>
       <RouteChangeHandler />
       <Routes>
-        <Route path="/instructor" element={<InstructorDashboardLayout />}>
+        <Route
+          path="/instructor"
+          element={
+            <InstructorRouteGuard>
+              <InstructorDashboardLayout />
+            </InstructorRouteGuard>
+          }
+        >
           <Route index element={<InstructorDashboard />} />
           <Route path="courses" element={<CourseManagement />} />
           <Route path="course/:courseId" element={<CourseManagement />} />
