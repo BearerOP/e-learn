@@ -35,7 +35,7 @@ export const SignupForm: React.FC = () => {
 
     return (
         <div className="max-w-md mx-auto p-6 bg-card rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-center mb-6">Sign Up for GyanSagar</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">Sign Up for CodeIT</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>

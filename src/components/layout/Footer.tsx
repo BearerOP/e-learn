@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-background py-6 px-4 border-t">
       <div className="container mx-auto text-center">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Gyan Sagar. All rights reserved.
+          © {new Date().getFullYear()} CodeIT. All rights reserved.
         </p>
       </div>
     </footer>

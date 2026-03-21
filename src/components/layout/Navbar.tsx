@@ -129,7 +129,7 @@ console.log(loading);
                 </defs>
               </svg>
             </div>
-            <span className="text-xl font-bold">GyanSagar</span>
+            <span className="text-xl font-bold">CodeIT</span>
           </Link>
 
           {/* Navigation Menu */}

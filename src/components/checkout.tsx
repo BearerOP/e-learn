@@ -63,7 +63,7 @@ export default function CheckoutButton({
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderData.amount * 100, // Convert to paise
         currency: orderData.currency,
-        name: "Gyansagar",
+        name: "CodeIT",
         description: `Purchase of ${orderItems.length} course(s)`,
         image: favicon,
         order_id: orderData.orderId,
