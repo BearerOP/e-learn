@@ -57,7 +57,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    const alreadyPurchased = user.purchasedCourses.some(
+    const alreadyPurchased = user?.purchasedCourses?.some(
       (item) => item === courseId
     );
     if (alreadyPurchased) {
