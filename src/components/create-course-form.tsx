@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { Plus, Trash2 } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
@@ -19,6 +20,9 @@ export function CreateCourseForm() {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [newTag, setNewTag] = useState<string>("");
     const [files, setFiles] = useState<File[]>([]);
+    const [topics, setTopics] = useState<{heading: string, details: string}[]>([
+        { heading: "", details: "" }
+    ]);
     const navigate = useNavigate();
 
     console.log(files);
@@ -56,6 +60,7 @@ export function CreateCourseForm() {
             subCategory: selectedSubCategory!,
             tags: selectedTags,
             thumbnail: 'thumbnail.png',
+            whatYouWillLearn: topics.filter(t => t.heading.trim() !== "" || t.details.trim() !== ""),
         };
 
         toast.promise(
@@ -193,6 +198,44 @@ export function CreateCourseForm() {
                         {selectedTags.length === 5 && (
                             <p className="text-red-500 mt-2">You have reached the maximum number of tags (5).</p>
                         )}
+                        
+                        <div className="flex flex-col space-y-3 pt-2">
+                            <Label>What you'll learn (Classes / Topics)</Label>
+                            {topics.map((topic, index) => (
+                                <div key={index} className="flex flex-col space-y-2 p-3 border rounded-md relative border-neutral-200 dark:border-neutral-800">
+                                    <div className="flex justify-between items-center">
+                                        <Label className="text-xs font-semibold">Class / Topic {index + 1}</Label>
+                                        {topics.length > 1 && (
+                                            <Button type="button" variant="ghost" size="sm" onClick={() => setTopics(topics.filter((_, i) => i !== index))} className="h-6 w-6 p-0 text-red-500">
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        )}
+                                    </div>
+                                    <Input
+                                        placeholder="Heading (e.g. Class 1 - How the Internet Works)"
+                                        value={topic.heading}
+                                        onChange={(e) => {
+                                            const newTopics = [...topics];
+                                            newTopics[index].heading = e.target.value;
+                                            setTopics(newTopics);
+                                        }}
+                                    />
+                                    <Textarea
+                                        placeholder="Details (e.g. client–server, DNS, IP address, HTTP/HTTPS)"
+                                        value={topic.details}
+                                        onChange={(e) => {
+                                            const newTopics = [...topics];
+                                            newTopics[index].details = e.target.value;
+                                            setTopics(newTopics);
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                            <Button type="button" variant="outline" size="sm" className="mt-2 w-fit" onClick={() => setTopics([...topics, { heading: "", details: "" }])}>
+                                <Plus className="h-4 w-4 mr-2" /> Add Topic
+                            </Button>
+                        </div>
+
                         <div className="flex flex-col space-y-2">
                             <Label htmlFor="thumbnail">Thumbnail</Label>
                             <div className="w-full mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">

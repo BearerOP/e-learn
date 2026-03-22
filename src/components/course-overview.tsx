@@ -40,6 +40,8 @@ export default function CourseOverview() {
     };
     loadCourse();
   }, [courseId]);
+  console.log(course);
+  
 
   // const handleAddToCart = async (courseId: string) => {
   //   try {
@@ -112,7 +114,10 @@ export default function CourseOverview() {
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />
-                Last updated 4/2023
+                Last updated {new Date(course.updatedAt).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
               </div>
               <div className="flex items-center gap-1">
                 <Globe className="h-4 w-4" />
@@ -134,49 +139,42 @@ export default function CourseOverview() {
 
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">What you'll learn</h2>
-              <ul className="grid gap-3 sm:grid-cols-2">
-                <li className="flex gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 flex-shrink-0"
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  <span>Learn the fundamentals of SQL</span>
-                </li>
-                <li className="flex gap-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 flex-shrink-0"
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  <span>
-                    Learn how to request data from a server, limit and sort the
-                    responses, aggregate data from multiple tables
-                  </span>
-                </li>
-              </ul>
+              {course?.whatYouWillLearn && course.whatYouWillLearn.length > 0 ? (
+                <ul className="grid gap-3 sm:grid-cols-2">
+                  {course.whatYouWillLearn.map((item, index) => (
+                    <li key={index} className="flex gap-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-5 w-5 flex-shrink-0 mt-0.5"
+                      >
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      <div>
+                        <h3 className="font-medium text-sm">{item.heading}</h3>
+                        {item.details && <p className="text-muted-foreground text-sm mt-1">{item.details}</p>}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-muted-foreground text-sm">No topics have been added to this course yet.</p>
+              )}
             </div>
 
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Explore related topics</h2>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="secondary">SQL</Badge>
-                <Badge variant="secondary">Programming Languages</Badge>
-                <Badge variant="secondary">Development</Badge>
+                {course.tags.map((tag) => (
+                  <Badge key={tag} className="cursor-pointer">
+                    {tag}
+                  </Badge>
+                ))}
               </div>
             </div>
           </div>
@@ -216,7 +214,7 @@ export default function CourseOverview() {
                       >
                         Add to cart
                       </Button>
-                      <Button variant="outline" size="icon">
+                      {/* <Button variant="outline" size="icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
@@ -229,15 +227,15 @@ export default function CourseOverview() {
                         >
                           <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                         </svg>
-                      </Button>
+                      </Button> */}
                     </div>
                     <div className="text-center text-sm text-muted-foreground">
-                      30-Day Money-Back Guarantee
+                      5-Day Money-Back Guarantee
                     </div>
                     <div className="text-center text-sm text-muted-foreground">
                       Full Lifetime Access
                     </div>
-                    <div className="flex justify-between text-sm">
+                    {/* <div className="flex justify-between text-sm">
                       <Button variant="link" className="p-0">
                         Share
                       </Button>
@@ -247,7 +245,7 @@ export default function CourseOverview() {
                       <Button variant="link" className="p-0">
                         Apply Coupon
                       </Button>
-                    </div>
+                    </div> */}
                   </TabsContent>
                   <TabsContent value="teams" className="space-y-4">
                     <div className="text-center text-muted-foreground">

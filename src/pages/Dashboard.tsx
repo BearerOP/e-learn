@@ -84,7 +84,7 @@ export default function Dashboard() {
 
       <div className="space-y-12 p-6">
         <HeroCarousel loading={loading} items={getTopRatedCourses(5)} />
-        <CourseCarousel
+        {/* <CourseCarousel
           title="Recommended for you"
           courses={getRandomCourses(10).map((course) => ({
             ...course,
@@ -92,8 +92,8 @@ export default function Dashboard() {
             onAddToWishlist: () => handleAddToWishlist(course._id),
           }))}
           loading={loading}
-        />
-        <CourseCarousel
+        /> */}
+        {/* <CourseCarousel
           title="Top Rated Courses"
           courses={getTopRatedCourses(10).map((course) => ({
             ...course,
@@ -101,7 +101,7 @@ export default function Dashboard() {
             onAddToWishlist: () => handleAddToWishlist(course._id),
           }))}
           loading={loading}
-        />
+        /> */}
         <CourseCarousel
           title="All Courses"
           courses={courses.map((course) => ({

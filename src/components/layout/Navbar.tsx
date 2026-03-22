@@ -134,7 +134,7 @@ console.log(loading);
 
           {/* Navigation Menu */}
           <NavigationMenu className="hidden md:block ml-6">
-            <NavigationMenuList>
+            {/* <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -193,7 +193,7 @@ console.log(loading);
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-            </NavigationMenuList>
+            </NavigationMenuList> */}
           </NavigationMenu>
 
           <div className="hidden md:flex items-center space-x-4 ">

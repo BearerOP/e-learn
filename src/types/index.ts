@@ -26,6 +26,7 @@ export interface Course {
   price: number;
   thumbnail: string;
   category: string;
+  whatYouWillLearn?: { heading: string; details: string }[];
   createdBy: {
     _id: string;
     email: string;
@@ -44,6 +45,8 @@ export interface Course {
   status: string;
   onAddToCart?: () => void;
   onAddToWishlist?: () => void;
+  updatedAt: string;
+  tags: string[];
 }
 
 export interface MyLearningProps {
